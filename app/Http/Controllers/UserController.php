@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\UserData;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
@@ -158,7 +159,7 @@ class UserController extends Controller
                 //     return redirect()->back();
                 // }
               
-                return redirect('/');
+                return redirect('/dashboard');
             }else{
                 $message="Invalid Email or Password!";
                 Session::flash('error_message',$message);
@@ -299,6 +300,7 @@ class UserController extends Controller
         if($request->isMethod('post')){
             $data = $request->all();
             $user = new UserData;
+            $user->institute_type=$data['institute_type'];
             $user->institute_name=$data['institute_name'];
             $user->email=$data['email'];
             $user->phone=$data['phone'];
@@ -318,7 +320,8 @@ class UserController extends Controller
             // $user->status=0;
             $user->save();
             
-            return redirect()->back()->with('status','Data added successfully');
+            return redirect('/list-clinic')->with('success', 'Data added successfully');
+            // return redirect()->back()->with('status','Data added successfully');
         }
        
        
@@ -331,5 +334,45 @@ class UserController extends Controller
 
         return view('layouts.admin_layout.all_clinic_list',compact('clinicdata'));
     }
+    public function editInstitution($id){
+        $clinicdata = UserData::find($id);
 
+        return view('layouts.admin_layout.clinic_edit',compact('clinicdata'));
+    }
+    public function updateInstitution(Request $request,$id){
+        // dd($request);
+        $clinicdata = UserData::find($id);
+        $clinicdata->institute_type=$request->institute_type;
+        $clinicdata->institute_name=$request->institute_name;
+        $clinicdata->email=$request->email;
+        $clinicdata->phone=$request->phone;
+        $clinicdata->password=bcrypt($request->password);
+        $clinicdata->address= $request->address;
+        $clinicdata->year_drp_down=$request->year_drp_down;
+        $clinicdata->latitude=$request->latitude;
+        $clinicdata->longitude=$request->longitude;
+        if($request->hasfile('logo'))
+        {
+            $destination ="uploads/userdata/".$clinicdata->logo;
+            if (File::exists($destination)) {
+               File::delete($destination);
+            }
+            $file = $request->file('logo');
+            $extention = $file->getClientOriginalExtension();
+            $filename = time().'.'.$extention;
+            $file->move('uploads/userdata/', $filename);
+            $clinicdata->logo = $filename;
+        }
+        $clinicdata->update();
+        return redirect('/list-clinic')->with('status', 'Data updated successfully');
+    }
+    public function deleteInstitution($id){
+        $clinicdata = UserData::find($id);
+        $destination ="uploads/userdata/".$clinicdata->logo;
+        if (File::exists($destination)) {
+            File::delete($destination);
+         }
+         $clinicdata->delete();
+         return redirect('/list-clinic')->with('status', 'Data deleted successfully');
+    }
 }

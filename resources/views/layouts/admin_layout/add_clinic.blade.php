@@ -44,22 +44,20 @@
 
                 <div class="row">
                     <div class="col-12">
-                    @if (session('status'))
-                        <h6 class="alert alert-success">{{ session('status') }}</h6>
-                    @endif
+                    
                         <div class="card">
                             <div class="card-header">
                                 <h4 class="card-title">Basic Information</h4>
                                 <p class="card-title-desc">Fill all information below</p>
                             </div>
                             <div class="card-body">
-                            <form action="{{ url('save-institution') }}" id="userform" name="userform" method="POST" enctype="multipart/form-data">
+                            <form action="{{ url('save-institution') }}" id="userform" name="userform" method="POST" enctype="multipart/form-data" autocomplete="off">
                             @csrf
                                     <div class="row">
                                         <div class="col-sm-12">
                                             <div class="mb-3">
                                                 <label class="control-label">Register Institution</label>
-                                                <select class="form-control select2" id="drp-down">
+                                                <select class="form-control select2" id="drp-down" name="institute_type">
                                                     <option >Select options</option>
                                                     <option value="clinic">Clinic Registration</option>
                                                     <option value="hospital">Hospital Registration</option>
@@ -74,11 +72,11 @@
                                                     <div class="col-sm-6">
                                                         <div class="mb-3">
                                                             <label for="institute_name">Name of the Institution</label>
-                                                            <input id="institute_name" name="institute_name" type="text" class="form-control">
+                                                            <input id="institute_name" name="institute_name" type="text" class="form-control" required>
                                                         </div>
                                                         <div class="mb-3">
                                                             <label for="phone">Phone</label>
-                                                            <input id="phone" name="phone" type="text" class="form-control">
+                                                            <input id="phone" name="phone" type="text" class="form-control" required onkeyup="this.value=this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1')">
                                                         </div>
                                                         <div class="mb-3">
                                                             <label for="email">Email</label>
@@ -86,7 +84,7 @@
                                                         </div>
                                                         <div class="mb-3">
                                                             <label for="longitude">Longitude</label>
-                                                            <input id="longitude" name="longitude" type="text" class="form-control">
+                                                            <input id="longitude" name="longitude" type="text" class="form-control" onkeyup="this.value=this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1')">
                                                         </div>
                                                         <div class="mb-3">
                                                             <label for="logo">Upload logo</label>
@@ -112,7 +110,7 @@
                                                         </div>
                                                         <div class="mb-3">
                                                             <label for="latitude">Latitude</label>
-                                                            <input id="latitude" name="latitude" type="text" class="form-control">
+                                                            <input id="latitude" name="latitude" type="text" class="form-control" onkeyup="this.value=this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1')">
                                                         </div>
                                                         <div class="mb-3">
                                                             <label for="password">Password</label>
@@ -196,6 +194,7 @@
             
     }
 </script>
+
 </body>
 
 </html>

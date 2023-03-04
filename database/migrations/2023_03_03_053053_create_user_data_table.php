@@ -15,6 +15,7 @@ class CreateUserDataTable extends Migration
     {
         Schema::create('user_data', function (Blueprint $table) {
             $table->id();
+            $table->string('institute_type');
             $table->string('institute_name');
             $table->string('phone');
             $table->string('email');

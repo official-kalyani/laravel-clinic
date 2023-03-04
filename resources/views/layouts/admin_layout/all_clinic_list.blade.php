@@ -17,9 +17,7 @@
 
 @include('layouts.admin_layout.menu')
 
-    <!-- ============================================================== -->
-    <!-- Start right Content here -->
-    <!-- ============================================================== -->
+    
     <div class="main-content">
 
         <div class="page-content">
@@ -35,6 +33,9 @@
 
                 <div class="row">
                     <div class="col-12">
+                    @if (session('status'))
+                        <h6 class="alert alert-success">{{ session('status') }}</h6>
+                    @endif
                         <div class="card">
                             <div class="card-body">
                                 <div class="row mb-2">
@@ -50,7 +51,7 @@
                                         <div class="text-sm-end">
                                        
                                         <a href="{{ url('/add-clinic') }}" class="btn btn-success btn-rounded waves-effect waves-light mb-2 me-2"><i class="mdi mdi-plus me-1"></i>Add </a>
-                                            <!-- <button type="button" class="btn btn-success btn-rounded waves-effect waves-light mb-2 me-2"><i class="mdi mdi-plus me-1"></i> Add New Institution</button> -->
+                                            
                                         </div>
                                     </div><!-- end col-->
                                 </div>
@@ -82,15 +83,20 @@
                                                 <td>{{ $data->phone}}</td>
                                                 <td>{{ $data->email}}</td>
                                                 
-                                                <td><div class="d-flex gap-3">
-                                                        <a href="javascript:void(0);" class="text-success"><i class="mdi mdi-pencil font-size-18"></i></a>
-                                                        <form action="{{ url('products.destroy',$data->id) }}" method="POST">
-                                                            @csrf
-                                                            @method('DELETE')
-                                                        <a href="javascript:void(0);" class="text-danger"><i class="mdi mdi-delete font-size-18"></i></a>
-                                                        </form>
-                                                        <a href="javascript:void(0);" class="btn btn-success">Login</a>
-                                                    </div></td>
+                                                <td>
+                                                    <div class="d-flex gap-3">
+
+                                                        <a href="{{ url('clinic-edit/'.$data->id) }}" class="text-success"><i class="mdi mdi-pencil font-size-18"></i></a>
+                                                        
+                                                        <!-- <a href="{{ url('clinic-delete/'.$data->id) }}" class="text-danger"><i class="mdi mdi-delete font-size-18"></i></a> -->
+                                                        <form action="{{ url('clinic-delete/'.$data->id) }}" method="POST">
+                                                        @csrf
+                                                        @method('DELETE')
+                                    <button type="submit" class="btn btn-danger show_confirm">Delete</button>
+                                                    </form>
+                                     <a href="javascript:void(0);" class="btn btn-success">Login</a>
+                                                    </div>
+                                                </td>
                                             </tr>
 
                                             @endforeach
@@ -137,7 +143,13 @@
 
 @include('layouts.admin_layout.right-sidebar') 
 @include('layouts.admin_layout.vendor-scripts')
-
+<script type="text/javascript">
+    $('.show_confirm').click(function(e) {
+        if(!confirm('Are you sure you want to delete this?')) {
+            e.preventDefault();
+        }
+    });
+</script>
 
 </body>
 
