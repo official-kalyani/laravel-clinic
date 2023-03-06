@@ -2,7 +2,7 @@
 
 <head>
 
-    <title> | Dason - Admin & Dashboard Template</title>
+    <title> Dason - Admin & Dashboard Template</title>
 
     @include('layouts.admin_layout.head')
     @include('layouts.admin_layout.head-style')
@@ -785,7 +785,14 @@
 <script src="{{ asset('libs/admin-resources/jquery.vectormap/maps/jquery-jvectormap-world-mill-en.js') }}"></script>
 <!-- dashboard init -->
 <script src="{{ asset('js/pages/dashboard.init.js') }}"></script>
-
+<script>
+    $(document).ready(function() {
+    // show the alert
+    setTimeout(function() {
+        $(".alert-success").alert('close');
+    }, 2000);
+})
+</script>
 
 </body>
 

@@ -105,7 +105,7 @@
                                                             <input id="logo" name="logo" type="file"
                                                                 class="form-control">
                                                             <img src="{{ asset('uploads/userdata/'.$clinicdata->logo)}}"
-                                                                alt="">
+                                                                width="200" height="180"alt="">
                                                         </div>
                                                         <div class="mb-3">
                                                             <label for="cpassword">Confirm Password</label>
