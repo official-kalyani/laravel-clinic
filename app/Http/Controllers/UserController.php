@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\UserData;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
@@ -206,93 +207,45 @@ class UserController extends Controller
         return view('home.forgot_password');
     }
 
-    public function account(Request $request){
-        $user_id = Auth::user()->id;
-        $userDetails = User::find($user_id)->toArray();
-        // $userDetails = json_decode(json_encode($userDetails),true);
-        // dd($userDetails); die;
+    
 
-        if($request->isMethod('post')){
-            $data = $request->all();
-            // echo "<pre>"; print_r($data); die;
-
-            Session::forget('error_message');
-            Session::forget('success_message');
-
-            // Validation
-            $rules=[
-                'name'=>'required|regex:/^[\pL\s\-]+$/u',
-                'mobile'=>'required|numeric|digits:11',
-                'location_status'=>'required',
-                'district'=>'required',
-                'pin_code'=>'required',
-                'address'=>'required'
-            ];
-            $customMessages=[
-                'name.required'=>'Name is Required',
-                'name.alpha'=>'Valid Name is Required',
-                'mobile.required'=>'Mobile No. is Required',
-                'mobile.numeric'=>'valid Mobile no. is Required',
-                'mobile.digits'=>'Number Must be 11 Digit',
-                'address'=>'Valid Address is Required',
-                'location_status'=>'Select Location Status is Required',
-                'district'=>'Select District is Required',
-                'pin_code'=>'Valid Pin Code is Required',
-            ];
-            $this->validate($request,$rules,$customMessages);
-
-            $user = User::find($user_id);
-            $user->name = $data['name'];
-            $user->mobile = $data['mobile'];
-            $user->location_status = $data['location_status'];
-            $user->district = $data['district'];
-            $user->pin_code = $data['pin_code'];
-            $user->address = $data['address'];
-            $user->save();
-            $message = "Your Account Details Has Been Updated Successfully";
-            Session::put('success_message',$message);
-            return redirect()->back();
-        }
-        return view('home.user_account')->with(compact('userDetails'));
-    }
-
-    public function chkUserPassword(Request $request){
-        if($request->isMethod('post')){
-            $data = $request->all();
-            // echo "<pre>"; print_r($data); die;
-            $user_id = Auth::User()->id;
-            $checkPassword = User::select('password')->where('id',$user_id)->first();
-            if(Hash::check($data['current_pwd'],$checkPassword->password)){
-                return "true";
-            }else{
-                return "false";
-            }
-        }
-    }
-    public function updateUserPassword(Request $request){
-        if($request->isMethod('post')){
-            $data = $request->all();
-            Session::forget('error_message');
-            Session::forget('success_message');
+    // public function chkUserPassword(Request $request){
+    //     if($request->isMethod('post')){
+    //         $data = $request->all();
+    //         // echo "<pre>"; print_r($data); die;
+    //         $user_id = Auth::User()->id;
+    //         $checkPassword = User::select('password')->where('id',$user_id)->first();
+    //         if(Hash::check($data['current_pwd'],$checkPassword->password)){
+    //             return "true";
+    //         }else{
+    //             return "false";
+    //         }
+    //     }
+    // }
+    // public function updateUserPassword(Request $request){
+    //     if($request->isMethod('post')){
+    //         $data = $request->all();
+    //         Session::forget('error_message');
+    //         Session::forget('success_message');
             
-            // echo "<pre>"; print_r($data); die;
-            $user_id = Auth::User()->id;
-            $checkPassword = User::select('password')->where('id',$user_id)->first();
-            if(Hash::check($data['current_pwd'],$checkPassword->password)){
-                //Update Password
-                $new_pwd = bcrypt($data['new_pwd']);
-                User::where('id',$user_id)->update(['password'=>$new_pwd]);
-                $message = "Password Updated Successfully";
-                Session::put('success_message',$message);
-                return redirect()->back();
+    //         // echo "<pre>"; print_r($data); die;
+    //         $user_id = Auth::User()->id;
+    //         $checkPassword = User::select('password')->where('id',$user_id)->first();
+    //         if(Hash::check($data['current_pwd'],$checkPassword->password)){
+    //             //Update Password
+    //             $new_pwd = bcrypt($data['new_pwd']);
+    //             User::where('id',$user_id)->update(['password'=>$new_pwd]);
+    //             $message = "Password Updated Successfully";
+    //             Session::put('success_message',$message);
+    //             return redirect()->back();
 
-            }else{
-                $message = "Current Password is Incorrect!";
-                Session::put('error_message',$message);
-                return redirect()->back();
-            }
-        }
-    }
+    //         }else{
+    //             $message = "Current Password is Incorrect!";
+    //             Session::put('error_message',$message);
+    //             return redirect()->back();
+    //         }
+    //     }
+    // }
     public function addClinic(Request $request){
         return view('layouts.admin_layout.add_clinic');
     }
@@ -300,12 +253,18 @@ class UserController extends Controller
         if($request->isMethod('post')){
             $data = $request->all();
             $user = new UserData;
+            $users = new User;
             $user->institute_type=$data['institute_type'];
             $user->institute_name=$data['institute_name'];
             $user->email=$data['email'];
             $user->phone=$data['phone'];
             $user->password=bcrypt($data['password']);
             $user->address=$data['address'];
+            $users->email=$data['email'];
+            $users->mobile=$data['phone'];
+            $users->password=bcrypt($data['password']);
+            $users->address=$data['address'];
+            $users->user_type='hospital';
             $user->year_drp_down=$data['year_drp_down'];
             $user->latitude=$data['latitude'];
             $user->longitude=$data['longitude'];
@@ -319,6 +278,7 @@ class UserController extends Controller
         }
             // $user->status=0;
             $user->save();
+            $users->save();
             
             return redirect('/list-clinic')->with('success', 'Data added successfully');
             // return redirect()->back()->with('status','Data added successfully');
@@ -331,8 +291,9 @@ class UserController extends Controller
 
     public function listClinic(){
         $clinicdata = UserData::paginate(5);
-
-        return view('layouts.admin_layout.all_clinic_list',compact('clinicdata'));
+       
+        $count = UserData::count();
+        return view('layouts.admin_layout.all_clinic_list',compact('clinicdata','count'));
     }
     public function editInstitution($id){
         $clinicdata = UserData::find($id);
@@ -375,4 +336,5 @@ class UserController extends Controller
          $clinicdata->delete();
          return redirect('/list-clinic')->with('status', 'Data deleted successfully');
     }
+    
 }

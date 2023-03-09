@@ -43,8 +43,10 @@ Route::group(['middleware'=>['auth']],function(){
 
     Route::put('update-institution/{id}',[App\Http\Controllers\UserController::class, 'updateInstitution']);
 
+    Route::get('/impersonate/user/{id}',[App\Http\Controllers\ImpersonateController::class, 'impersonate']);
 
    
 
 });
+// Route::get('/impersonate/destroy',[App\Http\Controllers\ImpersonateController::class, 'destroy']);
 

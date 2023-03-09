@@ -73,6 +73,7 @@
                                             </tr>
                                         </thead>
                                         <tbody>
+                                            @if($count > 0)
                                         @foreach ($clinicdata as $data)
                                             <tr>
                                                 
@@ -94,13 +95,21 @@
                                                         @method('DELETE')
                                     <button type="submit" class="btn btn-danger show_confirm">Delete</button>
                                                     </form>
-                                     <a href="javascript:void(0);" class="btn btn-success">Login</a>
+                                     <a href="{{ url('/impersonate/user/'.$data->user_id)}}" class="btn btn-success">Login</a>
+                                    
+
+
                                                     </div>
                                                 </td>
                                             </tr>
 
                                             @endforeach
-
+                                            @else                                            
+                                            <tr>
+                                               <td colspan="6" style="
+                                                text-align: center;">No record found</td>
+                                            </tr>
+                                            @endif
                                         </tbody>
                                     </table>
                                     {{ $clinicdata->links() }}

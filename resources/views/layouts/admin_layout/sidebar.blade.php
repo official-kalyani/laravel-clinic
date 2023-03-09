@@ -9,7 +9,7 @@
             <li class="menu-title" data-key="t-menu"></li>
 
             <li>
-                <a href="{{ url('/') }}">
+                <a href="{{ url('/dashboard') }}">
                     <i data-feather="home"></i>
                     <span class="badge rounded-pill bg-soft-success text-success float-end">9+</span>
                     <span data-key="t-dashboard"></span>
