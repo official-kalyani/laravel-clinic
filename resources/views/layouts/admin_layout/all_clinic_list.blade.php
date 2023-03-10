@@ -93,9 +93,11 @@
                                                         <form action="{{ url('clinic-delete/'.$data->id) }}" method="POST">
                                                         @csrf
                                                         @method('DELETE')
-                                    <button type="submit" class="btn btn-danger show_confirm">Delete</button>
+                                        <button type="submit" class="btn btn-danger show_confirm">Delete</button>
                                                     </form>
-                                     <a href="{{ url('/impersonate/user/'.$data->user_id)}}" class="btn btn-success">Login</a>
+                                                    
+                                     <a href="{{ url('/impersonate/user/'.$data->email)}}" class="btn btn-success">Login</a>
+                                     <!-- <a href="{{ url('/impersonate/user/'.$data->user_id)}}" class="btn btn-success">Login</a> -->
                                     
 
 

@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 
 use App\Models\User;
-use App\Models\UserData;
+use App\Models\HospitalData;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -252,7 +252,7 @@ class UserController extends Controller
     public function saveInstitution(Request $request){
         if($request->isMethod('post')){
             $data = $request->all();
-            $user = new UserData;
+            $user = new HospitalData;
             $users = new User;
             $user->institute_type=$data['institute_type'];
             $user->institute_name=$data['institute_name'];
@@ -290,19 +290,19 @@ class UserController extends Controller
     }
 
     public function listClinic(){
-        $clinicdata = UserData::paginate(5);
+        $clinicdata = HospitalData::paginate(5);
        
-        $count = UserData::count();
+        $count = HospitalData::count();
         return view('layouts.admin_layout.all_clinic_list',compact('clinicdata','count'));
     }
     public function editInstitution($id){
-        $clinicdata = UserData::find($id);
+        $clinicdata = HospitalData::find($id);
 
         return view('layouts.admin_layout.clinic_edit',compact('clinicdata'));
     }
     public function updateInstitution(Request $request,$id){
         // dd($request);
-        $clinicdata = UserData::find($id);
+        $clinicdata = HospitalData::find($id);
         $clinicdata->institute_type=$request->institute_type;
         $clinicdata->institute_name=$request->institute_name;
         $clinicdata->email=$request->email;
@@ -328,13 +328,31 @@ class UserController extends Controller
         return redirect('/list-clinic')->with('status', 'Data updated successfully');
     }
     public function deleteInstitution($id){
-        $clinicdata = UserData::find($id);
+        $clinicdata = HospitalData::find($id);
         $destination ="uploads/userdata/".$clinicdata->logo;
         if (File::exists($destination)) {
             File::delete($destination);
          }
          $clinicdata->delete();
          return redirect('/list-clinic')->with('status', 'Data deleted successfully');
+    }
+    public function email_available_check(Request $request){
+        if($request->get('email'))
+        {
+            $email = $request->get('email');
+            $data = DB::table("users")
+            ->where('email', $email)
+            ->count();
+            if($data > 0)
+            {
+            echo 'not_unique';
+            }
+            else
+            {
+            echo 'unique';
+            }
+        }
+    
     }
     
 }

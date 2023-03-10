@@ -236,11 +236,19 @@
                      <i data-feather="settings" class="icon-lg"></i>
                  </button>
              </div>
+             <div class="dropdown d-inline-block">
+             <form action="{{ url('/impersonate/destroy') }}" method="post">
+                @csrf
+                <button type="submit" class="btn btn-danger">Stop impersonating</button>
+            </form>
+             </div>
 
              <div class="dropdown d-inline-block">
+             
+
                  <button type="button" class="btn header-item bg-soft-light border-start border-end" id="page-header-user-dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                      <!-- <img class="rounded-circle header-profile-user user-profile-image" src="assets/images/users/avatar-1.jpg" alt="Header Avatar" id="user_image"> -->
-                     <span class="d-none d-xl-inline-block ms-1 fw-medium setting_user_name" id="setting_user_name">{{ Auth::user()->name }}</span>
+                     <span class="d-none d-xl-inline-block ms-1 fw-medium setting_user_name" id="setting_user_name">{{ Auth::user()->name ?Auth::user()->name:Auth::user()->email }}</span>
                      <i class="mdi mdi-chevron-down d-none d-xl-inline-block"></i>
                  </button>
                  <div class="dropdown-menu dropdown-menu-end">
