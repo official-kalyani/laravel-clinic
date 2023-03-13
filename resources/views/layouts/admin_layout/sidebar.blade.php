@@ -29,6 +29,28 @@
                     
                 </ul>
             </li>
+            <li>
+                <a href="javascript: void(0);" class="has-arrow">
+                <i data-feather="list"></i>
+                    <span data-key="t-ecommerce">Speciality Master </span>
+                </a>
+                <ul class="sub-menu" aria-expanded="false">
+                    <li><a href="{{ url('/add-speciality') }}" key="t-products">Add </a></li>
+                    <li><a href="{{ url('/list-speciality') }}" data-key="t-product-detail"> List Speciality</a></li>
+                    
+                </ul>
+            </li>
+            <li>
+                <a href="javascript: void(0);" class="has-arrow">
+                <i data-feather="users"></i>
+                    <span data-key="t-ecommerce">Doctor Management</span>
+                </a>
+                <ul class="sub-menu" aria-expanded="false">
+                    <li><a href="{{ url('/add-doctor') }}" key="t-products">Add Doctor</a></li>
+                    <li><a href="{{ url('/list-doctor') }}" data-key="t-product-detail">List Doctor</a></li>
+                    
+                </ul>
+            </li>
 
             
 

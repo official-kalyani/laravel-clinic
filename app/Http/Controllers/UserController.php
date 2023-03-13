@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\HospitalData;
+use App\Models\Speciality;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -297,7 +298,6 @@ class UserController extends Controller
     }
     public function editInstitution($id){
         $clinicdata = HospitalData::find($id);
-
         return view('layouts.admin_layout.clinic_edit',compact('clinicdata'));
     }
     public function updateInstitution(Request $request,$id){
@@ -354,5 +354,94 @@ class UserController extends Controller
         }
     
     }
+
+
+    // Speciality code start
+    public function speciality_available_check(Request $request){
+        if($request->get('speciality'))
+        {
+            $speciality = $request->get('speciality');
+            $data = DB::table("specialities")
+            ->where('speciality', $speciality)
+            ->count();
+            if($data > 0)
+            {
+            echo 'not_unique';
+            }
+            else
+            {
+            echo 'unique';
+            }
+        }
     
+    }
+    public function add_speciality(){
+        return view('layouts.admin_layout.add_speciality');
+    }
+    public function save_speciality(Request $request){
+        if($request->isMethod('post')){
+            $data = $request->all();
+            $speciality_data = new Speciality;
+            $speciality_data->speciality = $data['speciality'];
+           
+            if($request->hasfile('icon'))
+        {
+                $file = $request->file('icon');
+                $extention = $file->getClientOriginalExtension();
+                $filename = time().'.'.$extention;
+                $file->move('uploads/speciality/', $filename);
+                $speciality_data->icon = $filename;
+        }
+            
+            $speciality_data->save();
+            
+            return redirect('/list-speciality')->with('success', 'Data added successfully');
+        }
+    }
+    public function list_speciality(){
+        $specialitydata = Speciality::paginate(5);       
+        $count = Speciality::count();
+        return view('layouts.admin_layout.speciality_list',compact('specialitydata','count'));
+    }
+    public function edit_speciality($id){
+        $specialitydata = Speciality::find($id);
+        return view('layouts.admin_layout.speciality_edit',compact('specialitydata')); 
+    }
+    // update_speciality
+    public function update_speciality(Request $request,$id){
+        
+        $specialitydata = Speciality::find($id);
+        $specialitydata->speciality=$request->speciality;
+        if($request->hasfile('icon'))
+        {
+            $destination ="uploads/speciality/".$specialitydata->icon;
+            if (File::exists($destination)) {
+               File::delete($destination);
+            }
+            $file = $request->file('icon');
+            $extention = $file->getClientOriginalExtension();
+            $filename = time().'.'.$extention;
+            $file->move('uploads/speciality/', $filename);
+            $specialitydata->icon = $filename;
+        }
+        $specialitydata->update();
+        return redirect('/list-speciality')->with('status', 'Data updated successfully');
+    }
+    public function delete_speciality($id){
+        $specialitydata = Speciality::find($id);
+        $destination ="uploads/speciality/".$specialitydata->icon;
+        if (File::exists($destination)) {
+            File::delete($destination);
+         }
+         $specialitydata->delete();
+         return redirect('/list-speciality')->with('status', 'Data deleted successfully');
+    }
+    // Speciality code end
+
+    // Doctor code start
+
+    public function add_doctor(){
+        return view('layouts.admin_layout.add_doctor');
+    }
+    // Doctor code end
 }
