@@ -239,7 +239,7 @@
              <div class="dropdown d-inline-block">
              <form action="{{ url('/impersonate/destroy') }}" method="post">
                 @csrf
-                <button type="submit" class="btn btn-danger">Stop impersonating</button>
+                <button type="submit" class="btn btn-danger">Back</button>
             </form>
              </div>
 

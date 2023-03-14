@@ -443,5 +443,11 @@ class UserController extends Controller
     public function add_doctor(){
         return view('layouts.admin_layout.add_doctor');
     }
+    public function dropDownShow()
+    {
+        $specialities = Speciality::all();
+        return response()->json($specialities);
+        // return view('layouts.admin_layout.add_doctor', compact('id', 'items'));
+    }
     // Doctor code end
 }

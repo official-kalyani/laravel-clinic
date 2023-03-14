@@ -62,6 +62,8 @@ Route::group(['middleware'=>['auth']],function(){
     Route::put('/update-doctor/{id}',[App\Http\Controllers\UserController::class, 'update_doctor']);
     Route::delete('/doctor-delete/{id}',[App\Http\Controllers\UserController::class, 'delete_doctor']);
     // Route::post('/speciality_available_check',[App\Http\Controllers\UserController::class,'speciality_available_check']);
+    Route::get('/dropdown-speciality', [App\Http\Controllers\UserController::class,'dropDownShow']);
+    
 // Doctor code end
 
 });

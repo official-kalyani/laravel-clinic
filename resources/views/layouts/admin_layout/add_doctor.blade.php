@@ -159,10 +159,7 @@
                                                 
                                             </div>
                                         </div>
-                                                <!-- <div class="d-flex flex-wrap gap-2">
-                                                    <button type="submit" id="create" class="btn btn-primary waves-effect waves-light">Save Changes</button>
-                                                    <button type="button" class="btn btn-secondary waves-effect waves-light">Cancel</button>
-                                                </div> -->
+                                                
                                   
                                         </div>
                                     </div>
@@ -182,8 +179,11 @@
                                                     <div class="row">
                                                         <div class="col-sm-6">
                                                             <div class="mb-3">
-                                                                <label for="institute_name">Name of the Institution</label>
-                                                                <input id="institute_name" name="institute_name" type="text" class="form-control" required>
+                                                                <label for="speciality">Speciality</label>
+                                                               <select name="speciality" id="speciality" class="form-control" >
+                                                                 
+
+                                                               </select>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -207,7 +207,17 @@
                                                     <div class="row">
                                                         <div class="col-sm-6">
                                                             <div class="mb-3">
-                                                                <label for="institute_name">Name of the Institution</label>
+                                                                <label for="institute_name">Clinic Fee</label>
+                                                                <input id="institute_name" name="institute_name" type="text" class="form-control" required>
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <label for="institute_name">Commission Fee(in %)</label>
+                                                                <input id="institute_name" name="institute_name" type="text" class="form-control" required>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-6">
+                                                            <div class="mb-3">
+                                                                <label for="institute_name">Online Fee</label>
                                                                 <input id="institute_name" name="institute_name" type="text" class="form-control" required>
                                                             </div>
                                                         </div>
@@ -232,9 +242,35 @@
                                                     <div class="row">
                                                         <div class="col-sm-6">
                                                             <div class="mb-3">
-                                                                <label for="institute_name">Name of the Institution</label>
+                                                                <label for="institute_name">Name </label>
                                                                 <input id="institute_name" name="institute_name" type="text" class="form-control" required>
                                                             </div>
+                                                            <div class="mb-3">
+                                                                <label for="institute_name">State </label>
+                                                                <input id="institute_name" name="institute_name" type="text" class="form-control" required>
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <label for="institute_name">Street </label>
+                                                                <input id="institute_name" name="institute_name" type="text" class="form-control" required>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-6">
+                                                            <div class="mb-3">
+                                                                <label for="institute_name">Address </label>
+                                                                <input id="institute_name" name="institute_name" type="text" class="form-control" required>
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <label for="institute_name">City </label>
+                                                                <input id="institute_name" name="institute_name" type="text" class="form-control" required>
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <label for="institute_name">Zip </label>
+                                                                <input id="institute_name" name="institute_name" type="text" class="form-control" required>
+                                                            </div>
+                                                            <div class="d-flex flex-wrap gap-2">
+                                                    <button type="submit" id="create" class="btn btn-primary waves-effect waves-light">Save Changes</button>
+                                                    <button type="button" class="btn btn-secondary waves-effect waves-light">Cancel</button>
+                                                </div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -281,6 +317,22 @@
     dateDropdown.add(dateOption);      
     currentYear -= 1;    
   }
+</script>
+<script>
+    $(document).ready(function() {
+       
+        $.ajax({
+            url: "{{ url('dropdown-speciality') }}",
+            dataType: 'json',
+            success: function(data) {
+                var options = '';
+                $.each(data, function(index, speciality) {
+                    options += '<option value="' + speciality.id + '">' + speciality.speciality + '</option>';
+                });
+                $('#speciality').append(options);
+            }
+        });
+    });
 </script>
 </body>
 
