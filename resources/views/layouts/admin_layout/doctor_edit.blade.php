@@ -158,8 +158,8 @@
                                                         </div>
                                                         <div class="col-sm-6">
                                                             <div class="mb-3">
-                                                            <label for="pyear" class="form-label">Passing Year</label><br>
-                                                            <select class="select2 form-select" id="pyear" name="pyear">
+                                                            <label for="manufacturerbrand">Passing Year</label>
+                                                            <select class="form-control" id="pyear" name="pyear">
                                                                 
                                                             </select>
                                                         </div>
@@ -183,8 +183,8 @@
                                                     <div class="row">
                                                         <div class="col-sm-6">
                                                             <div class="mb-3">
-                                                                <label for="speciality">Speciality</label><br>
-                                                               <select name="speciality" id="speciality" class="form-control select2" >
+                                                                <label for="speciality">Speciality</label>
+                                                               <select name="speciality" id="speciality" class="form-control" >
                                                                  
 
                                                                </select>
@@ -245,45 +245,38 @@
                                                 <div class="col-12">
                                                     <div class="row">
                                                         <div class="col-sm-6">
-                                                            <!-- <div class="mb-3">
+                                                            <div class="mb-3">
                                                                 <label for="addrs_name">Name </label>
                                                                 <input id="addrs_name" name="addrs_name" type="text" class="form-control" >
-                                                            </div> -->
+                                                            </div>
                                                             <div class="mb-3">
-                                                                <label for="state" class="form-label">State </label><br>
-                                                                <select name="state" id="state" class="form-select select2" ></select>
+                                                                <label for="state">State </label>
+                                                                <select name="state" id="state" class="form-control" ></select>
                                                                
                                                             </div>
                                                             <div class="mb-3">
                                                                 <label for="street">Street </label>
                                                                 <input id="street" name="street" type="text" class="form-control" >
                                                             </div>
-                                                            <div class="mb-3">
-                                                                <label for="zip">Zip </label>
-                                                                <input id="zip" name="zip" type="text" class="form-control" >
-                                                            </div>
                                                         </div>
-                                                        
                                                         <div class="col-sm-6">
                                                             <div class="mb-3">
                                                                 <label for="full_addrs">Address </label>
                                                                 <input id="full_addrs" name="full_addrs" type="text" class="form-control" >
                                                             </div>
                                                             <div class="mb-3">
-                                                                <label for="city" class="form-label">City </label><br>
+                                                                <label for="city">City </label>
                                                                 
-                                                                <select name="city" id="city" class="select2 form-select" ></select>
+                                                                <select name="city" id="city" class="form-control" ></select>
                                                             </div>
                                                             <div class="mb-3">
-                                                                <label for="zip">&nbsp;</label>
-                                                               
+                                                                <label for="zip">Zip </label>
+                                                                <input id="zip" name="zip" type="text" class="form-control" >
                                                             </div>
-                                                            <div class="mb-3">
-                                                                <div class="d-flex flex-wrap gap-2">
-                                                                    <button type="submit" id="create" class="btn btn-primary waves-effect waves-light">Save Changes</button>
-                                                                    <button type="button" class="btn btn-secondary waves-effect waves-light">Cancel</button>
-                                                                </div>
-                                                            </div>
+                                                            <div class="d-flex flex-wrap gap-2">
+                                                    <button type="submit" id="create" class="btn btn-primary waves-effect waves-light">Save Changes</button>
+                                                    <button type="button" class="btn btn-secondary waves-effect waves-light">Cancel</button>
+                                                </div>
                                                         </div>
                                                     </div>
                                                 </div>

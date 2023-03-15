@@ -32,10 +32,10 @@
             <li>
                 <a href="javascript: void(0);" class="has-arrow">
                 <i data-feather="list"></i>
-                    <span data-key="t-ecommerce">Speciality Master </span>
+                    <span data-key="t-ecommerce"> Master </span>
                 </a>
                 <ul class="sub-menu" aria-expanded="false">
-                    <li><a href="{{ url('/add-speciality') }}" key="t-products">Add </a></li>
+                    <!-- <li><a href="{{ url('/add-speciality') }}" key="t-products">Add </a></li> -->
                     <li><a href="{{ url('/list-speciality') }}" data-key="t-product-detail"> List Speciality</a></li>
                     
                 </ul>

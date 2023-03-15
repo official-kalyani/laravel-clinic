@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-
+use App\Models\DoctorInformation;
 use App\Models\User;
 use App\Models\HospitalData;
 use App\Models\Speciality;
@@ -385,13 +385,13 @@ class UserController extends Controller
             $speciality_data->speciality = $data['speciality'];
            
             if($request->hasfile('icon'))
-        {
-                $file = $request->file('icon');
-                $extention = $file->getClientOriginalExtension();
-                $filename = time().'.'.$extention;
-                $file->move('uploads/speciality/', $filename);
-                $speciality_data->icon = $filename;
-        }
+            {
+                    $file = $request->file('icon');
+                    $extention = $file->getClientOriginalExtension();
+                    $filename = time().'.'.$extention;
+                    $file->move('uploads/speciality/', $filename);
+                    $speciality_data->icon = $filename;
+            }
             
             $speciality_data->save();
             
@@ -448,6 +448,58 @@ class UserController extends Controller
         $specialities = Speciality::all();
         return response()->json($specialities);
         // return view('layouts.admin_layout.add_doctor', compact('id', 'items'));
+    }
+    public function save_doctor(Request $request){
+        if($request->isMethod('post')){
+            $data = $request->all();
+            $doctor_data = new DoctorInformation();
+            $doctor_data->name = $data['name'];
+            $doctor_data->email = $data['email'];
+            $doctor_data->mobile = $data['mobile'];
+            $doctor_data->dob = $data['dob'];
+            $doctor_data->experience = $data['experience'];
+            $doctor_data->docstatus = $data['docstatus'];
+            $doctor_data->designation = $data['designation'];
+            $doctor_data->password = bcrypt($data['password']);
+            $doctor_data->landline = $data['landline'];
+            $doctor_data->gender = $data['gender'];
+            $doctor_data->licenseno = $data['licenseno'];
+            $doctor_data->about = $data['about'];
+            $doctor_data->degree = $data['degree'];
+            $doctor_data->pyear = $data['pyear'];
+            $doctor_data->speciality = $data['speciality'];
+            $doctor_data->clinicfee = $data['clinicfee'];
+            $doctor_data->commissionfee = $data['commissionfee'];
+            $doctor_data->onlinefee = $data['onlinefee'];
+            $doctor_data->addrs_name = $data['addrs_name'];
+            $doctor_data->state = $data['state'];
+            $doctor_data->street = $data['street'];
+            $doctor_data->full_addrs = $data['full_addrs'];
+            $doctor_data->city = $data['city'];
+            $doctor_data->zip = $data['zip'];
+           
+            if($request->hasfile('profilepic'))
+            {
+                    $file = $request->file('profilepic');
+                    $extention = $file->getClientOriginalExtension();
+                    $filename = time().'.'.$extention;
+                    $file->move('uploads/profilepic/', $filename);
+                    $doctor_data->profilepic = $filename;
+            }
+            
+            $doctor_data->save();
+            
+            return redirect('/list-doctor')->with('success', 'Data added successfully');
+        }
+    }
+    public function list_doctor(){
+        $doctordata = DoctorInformation::paginate(5);       
+        $count = DoctorInformation::count();
+        return view('layouts.admin_layout.list_doctor',compact('doctordata','count'));
+    }
+    public function edit_doctor($id){
+        $doctordata = DoctorInformation::find($id);
+        return view('layouts.admin_layout.doctor_edit',compact('doctordata'));
     }
     // Doctor code end
 }

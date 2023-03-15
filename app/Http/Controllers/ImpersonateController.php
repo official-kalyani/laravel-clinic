@@ -27,11 +27,13 @@ class ImpersonateController extends Controller
         // $user = User::where('email',$email)->first();
         // session()->put('impersonate', $user->id);
         // Auth::loginUsingId($user->id);
-        return redirect()->away('/dashboard')->with(['target' => '_blank']);
-        // return redirect('/dashboard');
+        return redirect('/dashboard');
     }
     public function destroy(){
+//         $value = $request->session()->get('key');
+// dd($value);
         if (session()->has('impersonate')) {
+            echo 'x';exit();
             // auth()->onceUsingId(session()->get('impersonate'));
             session()->forget('impersonate');
         }
