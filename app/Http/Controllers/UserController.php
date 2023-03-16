@@ -6,6 +6,7 @@ use App\Models\DoctorInformation;
 use App\Models\User;
 use App\Models\HospitalData;
 use App\Models\Speciality;
+use App\Models\Symptom;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -471,7 +472,7 @@ class UserController extends Controller
             $doctor_data->clinicfee = $data['clinicfee'];
             $doctor_data->commissionfee = $data['commissionfee'];
             $doctor_data->onlinefee = $data['onlinefee'];
-            $doctor_data->addrs_name = $data['addrs_name'];
+            // $doctor_data->addrs_name = $data['addrs_name'];
             $doctor_data->state = $data['state'];
             $doctor_data->street = $data['street'];
             $doctor_data->full_addrs = $data['full_addrs'];
@@ -501,5 +502,110 @@ class UserController extends Controller
         $doctordata = DoctorInformation::find($id);
         return view('layouts.admin_layout.doctor_edit',compact('doctordata'));
     }
+    public function update_doctor(Request $request,$id){
+        $doctordata = DoctorInformation::find($id);
+        // dd($doctordata);
+        $doctordata->name=$request->name;
+        $doctordata->email=$request->email;
+        $doctordata->mobile=$request->mobile;
+        $doctordata->dob=$request->dob;
+        $doctordata->experience=$request->experience;
+        $doctordata->docstatus=$request->docstatus;
+        $doctordata->designation=$request->designation;
+        $doctordata->password=$request->password;
+        $doctordata->landline=$request->landline;
+        $doctordata->gender=$request->gender;
+        $doctordata->licenseno=$request->licenseno;
+        $doctordata->about=$request->about;
+        $doctordata->degree=$request->degree;
+        $doctordata->pyear=$request->pyear;
+        $doctordata->speciality=$request->speciality;
+        $doctordata->clinicfee=$request->clinicfee;
+        $doctordata->commissionfee=$request->commissionfee;
+        $doctordata->onlinefee=$request->onlinefee;
+        // $doctordata->addrs_name=$request->addrs_name;
+        $doctordata->state=$request->state;
+        $doctordata->street=$request->street;
+        $doctordata->full_addrs=$request->full_addrs;
+        $doctordata->city=$request->city;
+        $doctordata->zip=$request->zip;
+        if($request->hasfile('profilepic'))
+        {
+            $destination ="uploads/profilepic/".$doctordata->profilepic;
+            if (File::exists($destination)) {
+               File::delete($destination);
+            }
+            $file = $request->file('profilepic');
+            $extention = $file->getClientOriginalExtension();
+            $filename = time().'.'.$extention;
+            $file->move('uploads/profilepic/', $filename);
+            $doctordata->profilepic = $filename;
+        }
+        $doctordata->update();
+        return redirect('/list-doctor')->with('status', 'Data updated successfully');
+    }
+    public function delete_doctor($id){
+        $doctordata = DoctorInformation::find($id);
+        $destination ="uploads/profilepic/".$doctordata->icon;
+        if (File::exists($destination)) {
+            File::delete($destination);
+         }
+         $doctordata->delete();
+         return redirect('/list-doctor')->with('status', 'Data deleted successfully');
+    }
     // Doctor code end
+    // Symptoms start
+
+    public function list_symptom(){
+        $symptomdata = Symptom::paginate(5);       
+        $count = Symptom::count();
+        return view('layouts.admin_layout.symptom_list',compact('symptomdata','count'));
+    }
+    public function save_symptom(Request $request){
+        if($request->isMethod('post')){
+            $data = $request->all();
+            $symptomdata = new Symptom;
+            $symptomdata->symptom = $data['symptom'];
+           
+            if($request->hasfile('icon'))
+            {
+                    $file = $request->file('icon');
+                    $extention = $file->getClientOriginalExtension();
+                    $filename = time().'.'.$extention;
+                    $file->move('uploads/symptom/', $filename);
+                    $symptomdata->icon = $filename;
+            }
+            
+            $symptomdata->save();
+            
+            return redirect('/list-symptom')->with('success', 'Data added successfully');
+        }
+    }
+    public function delete_symptom($id){
+        $symptomdata = Symptom::find($id);
+        $destination ="uploads/symptom/".$symptomdata->icon;
+        if (File::exists($destination)) {
+            File::delete($destination);
+         }
+         $symptomdata->delete();
+         return redirect('/list-symptom')->with('status', 'Data deleted successfully');
+    }
+    public function symptom_available_check(Request $request){
+        if($request->get('symptom'))
+        {
+            $symptom = $request->get('symptoms');
+            $data = DB::table("specialities")
+            ->where('symptom', $symptom)
+            ->count();
+            if($data > 0)
+            {
+            echo 'not_unique';
+            }
+            else
+            {
+            echo 'unique';
+            }
+        }
+    }
+    // Symptoms end
 }

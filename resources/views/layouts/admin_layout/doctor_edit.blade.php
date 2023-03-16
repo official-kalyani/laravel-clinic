@@ -41,8 +41,9 @@
                 @include('layouts.admin_layout.breadcrumb')
                 <!-- end page title -->
 
-                <form action="{{ url('save-doctor') }}" id="userform" name="userform" method="POST" enctype="multipart/form-data" autocomplete="off">
+                <form action="{{ url('update-doctor/'.$doctordata->id) }}" id="userform" name="userform" method="POST" enctype="multipart/form-data" autocomplete="off">
                                 @csrf
+                                @method('PUT')
                 <div class="row">
                     <div class="col-12">
                         <div class="card">
@@ -58,11 +59,11 @@
                                             <div class="col-sm-6">
                                                 <div class="mb-3">
                                                     <label for="name">Name </label>
-                                                    <input id="name" name="name" type="text" class="form-control" >
+                                                    <input id="name" name="name" type="text" class="form-control" value="{{ $doctordata->name}}">
                                                 </div>
                                                 <div class="mb-3">
                                                     <label for="email">Email</label>
-                                                    <input id="email" name="email" type="text" class="form-control">
+                                                    <input id="email" name="email" type="text" class="form-control" value="{{ $doctordata->email}}">
                                                     <span id="error_email"></span>
                                                 </div>
                                                 <div class="mb-3">
@@ -72,22 +73,27 @@
                                                 </div>
                                                 <div class="mb-3">
                                                     <label for="mobile">Mobile</label>
-                                                    <input id="mobile" name="mobile" type="text" class="form-control" onkeyup="this.value=this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1')">
+                                                    <input id="mobile" name="mobile" type="text" class="form-control" onkeyup="this.value=this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1')" value="{{ $doctordata->mobile}}">
                                                 </div>
                                                 
                                                 <div class="mb-3">
                                                     <label for="dob">Date of birth</label>
-                                                    <input id="dob" name="dob" type="date" class="form-control">
+                                                    <input id="dob" name="dob" type="date" class="form-control" value="{{ $doctordata->dob}}">
                                                 </div>
                                                 <div class="mb-3">
                                                     <label for="experience">Experience</label>
-                                                    <input id="experience" name="experience" type="text" class="form-control">
+                                                    <input id="experience" name="experience" type="text" class="form-control" value="{{ $doctordata->experience}}">
                                                 </div>
                                                 <div class="mb-3">
                                                     <label for="docstatus">Status</label>
                                                    <select name="docstatus" id="docstatus" class="form-control">
-                                                        <option value="active">Active</option>
-                                                        <option value="inactive">Inactive</option>
+                                                    <option value="0">Select status</option>
+                                                        <option value="active" @if ($doctordata->docstatus == 'active')
+                                                            selected="selected"
+                                                            @endif >Active</option>
+                                                        <option value="inactive" @if ($doctordata->docstatus == 'inactive')
+                                                            selected="selected"
+                                                            @endif>Inactive</option>
                                                    </select>
                                                 </div>
                                                         
@@ -95,7 +101,7 @@
                                             <div class="col-sm-6">
                                                 <div class="mb-3">
                                                 <label for="designation">Designation </label>
-                                                    <input id="designation" name="designation" type="text" class="form-control" >
+                                                    <input id="designation" name="designation" type="text" class="form-control" value="{{ $doctordata->designation}}">
                                                     
                                                 </div>
                                                 <div class="mb-3">
@@ -105,22 +111,29 @@
                                                 </div>
                                                 <div class="mb-3">
                                                     <label for="landline">Landline</label>
-                                                    <input type="text" name="landline" id="landline" class="form-control" onkeyup="this.value=this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1')">
+                                                    <input type="text" name="landline" id="landline" class="form-control" onkeyup="this.value=this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1')" value="{{ $doctordata->landline}}">
                                                 </div>
                                                 <div class="mb-3">
                                                     <label for="latitude">Gender</label>
                                                    <select name="gender" id="gender" class="form-control">
-                                                    <option value="male">Male</option>
-                                                    <option value="female">Female</option>
+                                                    <option value="0">Select gender</option>
+                                                    <option value="male" @if ($doctordata->gender == 'male')
+                                                            selected="selected"
+                                                            @endif >Male</option>
+                                                    <option value="female" @if ($doctordata->gender == 'female')
+                                                            selected="selected"
+                                                            @endif>Female</option>
                                                    </select>
                                                 </div>
                                                 <div class="mb-3">
                                                     <label for="profilepic">Profile picture</label>
                                                     <input id="profilepic" name="profilepic" type="file" class="form-control">
+                                                    <img src="{{ asset('uploads/profilepic/'.$doctordata->profilepic)}}"
+                                                                width="200" height="180"alt="">
                                                 </div>
                                                 <div class="mb-3">
                                                     <label for="licenseno">License no</label>
-                                                    <input id="licenseno" name="licenseno" type="text" class="form-control">
+                                                    <input id="licenseno" name="licenseno" type="text" class="form-control" value="{{ $doctordata->licenseno}}">
                                                 </div>
                                             </div>
                                         </div>
@@ -128,7 +141,7 @@
                                             <div class="col-sm-12">
                                             <div class="mb-3">
                                                     <label for="about">About</label>
-                                                    <textarea class="form-control" id="about" name="about" rows="5"></textarea>
+                                                    <textarea class="form-control" id="about" name="about" rows="5">{{ $doctordata->about}}</textarea>
                                                 </div>
                                             </div>
                                         </div>
@@ -153,13 +166,13 @@
                                                         <div class="col-sm-6">
                                                             <div class="mb-3">
                                                                 <label for="degree">Degree</label>
-                                                                <input id="degree" name="degree" type="text" class="form-control" >
+                                                                <input id="degree" name="degree" type="text" class="form-control" value="{{ $doctordata->degree}}">
                                                             </div>
                                                         </div>
                                                         <div class="col-sm-6">
                                                             <div class="mb-3">
                                                             <label for="manufacturerbrand">Passing Year</label>
-                                                            <select class="form-control" id="pyear" name="pyear">
+                                                            <select class="form-control" id="pyear" name="pyear" >
                                                                 
                                                             </select>
                                                         </div>
@@ -184,6 +197,8 @@
                                                         <div class="col-sm-6">
                                                             <div class="mb-3">
                                                                 <label for="speciality">Speciality</label>
+                                                                <input type="hidden" id="selected_speciality" value="{{ $doctordata->speciality }}">
+
                                                                <select name="speciality" id="speciality" class="form-control" >
                                                                  
 
@@ -212,17 +227,17 @@
                                                         <div class="col-sm-6">
                                                             <div class="mb-3">
                                                                 <label for="clinicfee">Clinic Fee</label>
-                                                                <input id="clinicfee" name="clinicfee" type="text" class="form-control" >
+                                                                <input id="clinicfee" name="clinicfee" type="text" class="form-control" value="{{ $doctordata->clinicfee }}">
                                                             </div>
                                                             <div class="mb-3">
                                                                 <label for="commissionfee">Commission Fee(in %)</label>
-                                                                <input id="commissionfee" name="commissionfee" type="text" class="form-control" >
+                                                                <input id="commissionfee" name="commissionfee" type="text" class="form-control" value="{{ $doctordata->commissionfee }}">
                                                             </div>
                                                         </div>
                                                         <div class="col-sm-6">
                                                             <div class="mb-3">
                                                                 <label for="onlinefee">Online Fee</label>
-                                                                <input id="onlinefee" name="onlinefee" type="text" class="form-control" >
+                                                                <input id="onlinefee" name="onlinefee" type="text" class="form-control" value="{{ $doctordata->onlinefee }}">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -245,33 +260,34 @@
                                                 <div class="col-12">
                                                     <div class="row">
                                                         <div class="col-sm-6">
-                                                            <div class="mb-3">
+                                                            <!-- <div class="mb-3">
                                                                 <label for="addrs_name">Name </label>
                                                                 <input id="addrs_name" name="addrs_name" type="text" class="form-control" >
-                                                            </div>
+                                                            </div> -->
                                                             <div class="mb-3">
                                                                 <label for="state">State </label>
+                                                                <input type="hidden" id="selected_state" value="{{ $doctordata->state }}">
                                                                 <select name="state" id="state" class="form-control" ></select>
                                                                
                                                             </div>
                                                             <div class="mb-3">
                                                                 <label for="street">Street </label>
-                                                                <input id="street" name="street" type="text" class="form-control" >
+                                                                <input id="street" name="street" type="text" class="form-control" value="{{ $doctordata->street }}">
                                                             </div>
                                                         </div>
                                                         <div class="col-sm-6">
                                                             <div class="mb-3">
                                                                 <label for="full_addrs">Address </label>
-                                                                <input id="full_addrs" name="full_addrs" type="text" class="form-control" >
+                                                                <input id="full_addrs" name="full_addrs" type="text" class="form-control" value="{{ $doctordata->full_addrs }}">
                                                             </div>
                                                             <div class="mb-3">
                                                                 <label for="city">City </label>
-                                                                
+                                                                <input type="hidden" id="selected_city" value="{{ $doctordata->city }}">
                                                                 <select name="city" id="city" class="form-control" ></select>
                                                             </div>
                                                             <div class="mb-3">
                                                                 <label for="zip">Zip </label>
-                                                                <input id="zip" name="zip" type="text" class="form-control" >
+                                                                <input id="zip" name="zip" type="text" class="form-control" value="{{ $doctordata->zip }}">
                                                             </div>
                                                             <div class="d-flex flex-wrap gap-2">
                                                     <button type="submit" id="create" class="btn btn-primary waves-effect waves-light">Save Changes</button>
@@ -337,6 +353,7 @@ for (let i = 0; i < statelist.length; i++) {
 </script>
 <script>
 const citydropdown = document.getElementById("city");
+var selected_city = document.getElementById('selected_city');
 var citylist = [ 'Adilabad',
 			'Anantapur',
 			'Chittoor',
@@ -489,6 +506,10 @@ for (let i = 0; i < citylist.length; i++) {
   const option = document.createElement("option");
   option.value = citylist[i];
   option.text = citylist[i];
+  if (option.value === selected_city) {
+    option.selected = true;
+    break;
+  }
   citydropdown.appendChild(option);
 }
 </script>
@@ -499,9 +520,17 @@ for (let i = 0; i < citylist.length; i++) {
             url: "{{ url('dropdown-speciality') }}",
             dataType: 'json',
             success: function(data) {
+                var selectedValue = $('#selected_speciality option:selected').val();
                 var options = '';
                 $.each(data, function(index, speciality) {
-                    options += '<option value="' + speciality.id + '">' + speciality.speciality + '</option>';
+                    var selected = '';
+                    console.log(selectedValue);
+                if (speciality.id == selectedValue) {
+                    selected = 'selected';
+                }
+                   
+            options += '<option value="' + speciality.id + '" ' + selected + '>' + speciality.speciality + '</option>';
+    
                 });
                 $('#speciality').append(options);
             }

@@ -32,7 +32,7 @@
                 <!-- end page title -->
 
                 <div class="row">
-                    <div class="col-6">
+                    <div class="col-12">
                     @if (session('status'))
                         <h6 class="alert alert-success">{{ session('status') }}</h6>
                     @endif
@@ -42,15 +42,15 @@
                                     <div class="col-sm-4">
                                         <div class="search-box me-2 mb-2 d-inline-block">
                                             <div class="position-relative">
-                                                <!-- <input type="text" class="form-control" placeholder="Search..."> -->
-                                                <!-- <i class="bx bx-search-alt search-icon"></i> -->
+                                                <input type="text" class="form-control" placeholder="Search...">
+                                                <i class="bx bx-search-alt search-icon"></i>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-sm-8">
                                         <div class="text-sm-end">
                                        
-                                        <!-- <a href="{{ url('/add-speciality') }}" class="btn btn-success btn-rounded waves-effect waves-light mb-2 me-2"><i class="mdi mdi-plus me-1"></i>Add </a> -->
+                                        <a href="{{ url('/add-speciality') }}" class="btn btn-success btn-rounded waves-effect waves-light mb-2 me-2"><i class="mdi mdi-plus me-1"></i>Add </a>
                                             
                                         </div>
                                     </div><!-- end col-->
@@ -83,7 +83,7 @@
                                                 <td>
                                                     <div class="d-flex gap-3">
 
-                                                        <!-- <a href="{{ url('speciality-edit/'.$data->id) }}" class="text-success"><i class="mdi mdi-pencil font-size-18"></i></a> -->
+                                                        <a href="{{ url('speciality-edit/'.$data->id) }}" class="text-success"><i class="mdi mdi-pencil font-size-18"></i></a>
                                                         <form action="{{ url('speciality-delete/'.$data->id) }}" method="POST">
                                                         @csrf
                                                         @method('DELETE')
@@ -110,46 +110,6 @@
                                     </table>
                                     {{ $specialitydata->links() }}
                                 </div>
-                                
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-6">
-                    
-                        <div class="card">
-                            <div class="card-body">                            
-                            <form action="{{ url('save-speciality') }}" id="userform" name="userform" method="POST" enctype="multipart/form-data" autocomplete="off">
-                            @csrf
-                                    
-                                    <div class="row" id="form-data" >
-                                        <div class="col-12">
-                                           
-                                                <div class="row">
-                                                    <div class="col-sm-6">
-                                                        <div class="mb-3">
-                                                            <label for="speciality">Name of Speciality</label>
-                                                            <input id="speciality" name="speciality" type="text" class="form-control" required >
-                                                            <span id="error_speciality"></span>
-                                                        </div>
-                                                        
-                                                       
-                                                       
-                                                    </div>
-                                                    <div class="col-sm-6">
-                                                    <div class="mb-3">
-                                                            <label for="icon">Upload icon</label>
-                                                            <input id="icon" name="icon" type="file" class="form-control">
-                                                        </div>
-                                                        
-                                    
-                                                    </div>
-                                                </div>
-                                                <div class="d-flex flex-wrap gap-2">
-                                                    <button type="submit" id="create" class="btn btn-primary waves-effect waves-light">Save Changes</button>
-                                                    <button type="button" class="btn btn-secondary waves-effect waves-light">Cancel</button>
-                                                </div>
-                                            </form>
-                               
                                 
                             </div>
                         </div>

@@ -36,7 +36,9 @@
                 </a>
                 <ul class="sub-menu" aria-expanded="false">
                     <!-- <li><a href="{{ url('/add-speciality') }}" key="t-products">Add </a></li> -->
-                    <li><a href="{{ url('/list-speciality') }}" data-key="t-product-detail"> List Speciality</a></li>
+                    <li><a href="{{ url('/list-speciality') }}" data-key="t-product-detail"> Add Speciality</a></li>
+                    <li><a href="{{ url('/list-symptom') }}" data-key="t-product-detail"> Add Symptoms</a></li>
+                    <li><a href="{{ url('/list-state-city') }}" data-key="t-product-detail"> Add State/City</a></li>
                     
                 </ul>
             </li>

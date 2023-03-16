@@ -26,7 +26,7 @@
                 <!-- start page title -->
                 <?php
                 $maintitle = "Ecommerce";
-                $title = "Speciality List";
+                $title = "Symptom List";
                 ?>
                 @include('layouts.admin_layout.breadcrumb')
                 <!-- end page title -->
@@ -63,7 +63,7 @@
                                                
                                                 <th class="align-middle">ID</th>
                                                 <th class="align-middle">Icon</th>
-                                                <th class="align-middle">Speciality Name</th>
+                                                <th class="align-middle">Symptom Name</th>
                                                 
                                                 <th class="align-middle">Action</th>
                                                 
@@ -72,19 +72,19 @@
                                         </thead>
                                         <tbody>
                                             @if($count > 0)
-                                        @foreach ($specialitydata as $data)
+                                        @foreach ($symptomdata as $data)
                                             <tr>
                                                 
                                                 <td>{{ $data->id}}</td>
-                                                <td><img src="{{ asset('uploads/speciality/'.$data->icon) }}" width="70px" height="70px" alt="Image"></td>
-                                                <td>{{ $data->speciality}}</td>
+                                                <td><img src="{{ asset('uploads/symptom/'.$data->icon) }}" width="70px" height="70px" alt="Image"></td>
+                                                <td>{{ $data->symptom}}</td>
                                                
                                                 
                                                 <td>
                                                     <div class="d-flex gap-3">
 
                                                         <!-- <a href="{{ url('speciality-edit/'.$data->id) }}" class="text-success"><i class="mdi mdi-pencil font-size-18"></i></a> -->
-                                                        <form action="{{ url('speciality-delete/'.$data->id) }}" method="POST">
+                                                        <form action="{{ url('symptom-delete/'.$data->id) }}" method="POST">
                                                         @csrf
                                                         @method('DELETE')
                                         <button type="submit" class="btn btn-danger show_confirm">Delete</button>
@@ -108,7 +108,7 @@
                                             @endif
                                         </tbody>
                                     </table>
-                                    {{ $specialitydata->links() }}
+                                    {{ $symptomdata->links() }}
                                 </div>
                                 
                             </div>
@@ -118,7 +118,7 @@
                     
                         <div class="card">
                             <div class="card-body">                            
-                            <form action="{{ url('save-speciality') }}" id="userform" name="userform" method="POST" enctype="multipart/form-data" autocomplete="off">
+                            <form action="{{ url('save-symptom') }}" id="userform" name="userform" method="POST" enctype="multipart/form-data" autocomplete="off">
                             @csrf
                                     
                                     <div class="row" id="form-data" >
@@ -127,9 +127,9 @@
                                                 <div class="row">
                                                     <div class="col-sm-6">
                                                         <div class="mb-3">
-                                                            <label for="speciality">Name of Speciality</label>
-                                                            <input id="speciality" name="speciality" type="text" class="form-control" required >
-                                                            <span id="error_speciality"></span>
+                                                            <label for="symptom">Name of Symptom</label>
+                                                            <input id="symptom" name="symptom" type="text" class="form-control" required >
+                                                            <span id="error_symptom"></span>
                                                         </div>
                                                         
                                                        
@@ -179,7 +179,40 @@
         }
     });
 </script>
+<script>
+$(document).ready(function(){
 
+ $('#symptom').on('keyup',function(){
+    var error_symptom = '';
+  var symptom = $('#symptom').val();
+  var _token = $('input[name="_token"]').val();
+   $.ajax({
+    url:"{{ url('symptom_available_check') }}",
+    method:"POST",
+    data:{symptom:symptom, _token:_token},
+    success:function(result)
+    {
+     if(result == 'unique')
+     {
+      $('#error_symptom').html('<label class="text-success">symptom Available</label>');
+      $('#symptom').removeClass('has-error');
+    
+      $('#create').attr('disabled', false);
+     }
+     else
+     {
+      $('#error_speciality').html('<label class="text-danger">speciality not Available</label>');
+      $('#speciality').addClass('has-error');
+    
+      $('#create').attr('disabled', 'disabled');
+     }
+    }
+   });
+  
+ });
+ 
+});
+</script>
 </body>
 
 </html>

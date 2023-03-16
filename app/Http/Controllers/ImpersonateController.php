@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 
 class ImpersonateController extends Controller
 {
@@ -13,31 +14,34 @@ class ImpersonateController extends Controller
     //     $this->middleware(['auth','can:admin']);
     // }
     public function impersonate($email){
+        
+    
+        $user = User::where('email',$email)->first();
+        session()->put('impersonate', $user->id);        
+        Auth::loginUsingId($user->id);
+        return redirect('/dashboard');
+
         // if (session()->has('impersonate')) {
         //     abort(403, 'Cannot impersonate while already impersonating.');
         // }
-    
         // session()->put('impersonate', auth()->id());
         // auth()->login($user);
-    
-        $user = User::where('email',$email)->first();
-        session()->put('impersonate', auth()->id());
-        Auth::loginUsingId($user->id);
-
+        // session()->put('impersonate', auth()->id());
         // $user = User::where('email',$email)->first();
         // session()->put('impersonate', $user->id);
         // Auth::loginUsingId($user->id);
-        return redirect('/dashboard');
+       
     }
     public function destroy(){
 //         $value = $request->session()->get('key');
 // dd($value);
         if (session()->has('impersonate')) {
-            echo 'x';exit();
+        //    echo 'x';exit();
             // auth()->onceUsingId(session()->get('impersonate'));
             session()->forget('impersonate');
+            
         }
-       
         return redirect('/dashboard');
+        
     }
 }

@@ -66,6 +66,14 @@ Route::group(['middleware'=>['auth']],function(){
     
 // Doctor code end
 
+// symptoms start
+    Route::get('/add-symptom',[App\Http\Controllers\UserController::class,'add_symptom']);
+    Route::post('/save-symptom',[App\Http\Controllers\UserController::class,'save_symptom']);
+    Route::get('/list-symptom',[App\Http\Controllers\UserController::class,'list_symptom']);   
+    Route::delete('/symptom-delete/{id}',[App\Http\Controllers\UserController::class, 'delete_symptom']);
+    Route::post('/symptom_available_check',[App\Http\Controllers\UserController::class,'symptom_available_check']);
+// symptoms end
+
 });
 Route::post('/impersonate/destroy',[App\Http\Controllers\ImpersonateController::class, 'destroy']);
 
