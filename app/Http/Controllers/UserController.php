@@ -6,6 +6,7 @@ use App\Models\DoctorInformation;
 use App\Models\User;
 use App\Models\HospitalData;
 use App\Models\Speciality;
+use App\Models\StateCity;
 use App\Models\Symptom;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -450,6 +451,11 @@ class UserController extends Controller
         return response()->json($specialities);
         // return view('layouts.admin_layout.add_doctor', compact('id', 'items'));
     }
+    public function dropDownHospital()
+    {
+        $hospitaldata = HospitalData::all();
+        return response()->json($hospitaldata);
+    }
     public function save_doctor(Request $request){
         if($request->isMethod('post')){
             $data = $request->all();
@@ -593,8 +599,8 @@ class UserController extends Controller
     public function symptom_available_check(Request $request){
         if($request->get('symptom'))
         {
-            $symptom = $request->get('symptoms');
-            $data = DB::table("specialities")
+            $symptom = $request->get('symptom');
+            $data = DB::table("symptoms")
             ->where('symptom', $symptom)
             ->count();
             if($data > 0)
@@ -608,4 +614,65 @@ class UserController extends Controller
         }
     }
     // Symptoms end
+    
+    // list_state state code start
+    public function list_state(){
+        $statecitydata = StateCity::paginate(5);       
+        $count = StateCity::count();
+        return view('layouts.admin_layout.state_city_list',compact('statecitydata','count'));
+    }
+    public function save_state(Request $request){
+        if($request->isMethod('post')){
+            $data = $request->all();
+            $statedata = new StateCity;
+            $statedata->state = $data['state'];
+            $statedata->city = $data['city'];
+            $statedata->save();
+            
+            return redirect('/list-state-city')->with('success', 'Data added successfully');
+        }
+    }
+    public function delete_state($id){
+        $statedata = StateCity::find($id);
+       
+         $statedata->delete();
+         return redirect('/list-state-city')->with('status', 'Data deleted successfully');
+    }
+    public function state_available_check(Request $request){
+        if($request->get('state'))
+        {
+            $state = $request->get('state');
+            $data = DB::table("state_cities")
+            ->where('state', $state)
+            ->count();
+            if($data > 0)
+            {
+            echo 'not_unique';
+            }
+            else
+            {
+            echo 'unique';
+            }
+        }
+    }
+    public function city_available_check(Request $request){
+        if($request->get('city'))
+        {
+            $state = $request->get('city');
+            $data = DB::table("state_cities")
+            ->where('city', $state)
+            ->count();
+            if($data > 0)
+            {
+            echo 'not_unique';
+            }
+            else
+            {
+            echo 'unique';
+            }
+        }
+    }
+    //  state code end
+    
+
 }

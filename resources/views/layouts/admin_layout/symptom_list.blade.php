@@ -33,6 +33,53 @@
 
                 <div class="row">
                     <div class="col-6">
+                    
+                        <div class="card">
+                            <div class="card-body">                            
+                            <form action="{{ url('save-symptom') }}" id="userform" name="userform" method="POST" enctype="multipart/form-data" autocomplete="off">
+                            @csrf
+                                    
+                                    <div class="row" id="form-data" >
+                                        <div class="col-12">
+                                           
+                                                <div class="row">
+                                                    <div class="col-sm-6">
+                                                        <div class="mb-3">
+                                                            <label for="symptom">Name of Symptom</label>
+                                                            <input id="symptom" name="symptom" type="text" class="form-control" required >
+                                                            <span id="error_symptom"></span>
+                                                        </div>
+                                                        
+                                                       
+                                                       
+                                                    </div>
+                                                    <div class="col-sm-6">
+                                                    <div class="mb-3">
+                                                            <label for="icon">Upload icon</label>
+                                                            <input id="icon" name="icon" type="file" class="form-control">
+                                                        </div>
+                                                        
+                                    
+                                                    </div>
+                                                </div>
+                                                <div class="d-flex flex-wrap gap-2">
+                                                    <button type="submit" id="create" class="btn btn-primary waves-effect waves-light">Save Changes</button>
+                                                    <button type="button" class="btn btn-secondary waves-effect waves-light">Cancel</button>
+                                                </div>
+                                            </form>
+                               
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- end row -->
+
+
+
+
+            </div>
+                    <div class="col-6">
                     @if (session('status'))
                         <h6 class="alert alert-success">{{ session('status') }}</h6>
                     @endif
@@ -114,53 +161,8 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-6">
                     
-                        <div class="card">
-                            <div class="card-body">                            
-                            <form action="{{ url('save-symptom') }}" id="userform" name="userform" method="POST" enctype="multipart/form-data" autocomplete="off">
-                            @csrf
-                                    
-                                    <div class="row" id="form-data" >
-                                        <div class="col-12">
-                                           
-                                                <div class="row">
-                                                    <div class="col-sm-6">
-                                                        <div class="mb-3">
-                                                            <label for="symptom">Name of Symptom</label>
-                                                            <input id="symptom" name="symptom" type="text" class="form-control" required >
-                                                            <span id="error_symptom"></span>
-                                                        </div>
-                                                        
-                                                       
-                                                       
-                                                    </div>
-                                                    <div class="col-sm-6">
-                                                    <div class="mb-3">
-                                                            <label for="icon">Upload icon</label>
-                                                            <input id="icon" name="icon" type="file" class="form-control">
-                                                        </div>
-                                                        
-                                    
-                                                    </div>
-                                                </div>
-                                                <div class="d-flex flex-wrap gap-2">
-                                                    <button type="submit" id="create" class="btn btn-primary waves-effect waves-light">Save Changes</button>
-                                                    <button type="button" class="btn btn-secondary waves-effect waves-light">Cancel</button>
-                                                </div>
-                                            </form>
-                               
-                                
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- end row -->
-
-
-
-
-            </div> <!-- container-fluid -->
+                     <!-- container-fluid -->
         </div>
         <!-- End Page-content -->
         @include('layouts.admin_layout.footer')
@@ -183,6 +185,7 @@
 $(document).ready(function(){
 
  $('#symptom').on('keyup',function(){
+    // alert();
     var error_symptom = '';
   var symptom = $('#symptom').val();
   var _token = $('input[name="_token"]').val();
@@ -194,15 +197,15 @@ $(document).ready(function(){
     {
      if(result == 'unique')
      {
-      $('#error_symptom').html('<label class="text-success">symptom Available</label>');
+      $('#error_symptom').html('<label class="text-success">Symptom Available</label>');
       $('#symptom').removeClass('has-error');
     
       $('#create').attr('disabled', false);
      }
      else
      {
-      $('#error_speciality').html('<label class="text-danger">speciality not Available</label>');
-      $('#speciality').addClass('has-error');
+      $('#error_symptom').html('<label class="text-danger">Symptom not Available</label>');
+      $('#symptom').addClass('has-error');
     
       $('#create').attr('disabled', 'disabled');
      }

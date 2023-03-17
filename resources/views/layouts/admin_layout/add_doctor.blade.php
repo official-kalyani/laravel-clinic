@@ -57,6 +57,12 @@
                                         <div class="row">
                                             <div class="col-sm-6">
                                                 <div class="mb-3">
+                                                    <label for="name">Hospital name </label>
+                                                    <select name="hospital_name" id="hospital_name" class="form-control select2">
+                                                   <option value="0">Select hospital</option>
+                                                   </select>
+                                                </div>
+                                                <div class="mb-3">
                                                     <label for="name">Name </label>
                                                     <input id="name" name="name" type="text" class="form-control" >
                                                 </div>
@@ -511,6 +517,17 @@ for (let i = 0; i < citylist.length; i++) {
                     options += '<option value="' + speciality.id + '">' + speciality.speciality + '</option>';
                 });
                 $('#speciality').append(options);
+            }
+        });
+        $.ajax({
+            url: "{{ url('dropdown-hospital') }}",
+            dataType: 'json',
+            success: function(data) {
+                var options = '';
+                $.each(data, function(index, hospitaldata) {
+                    options += '<option value="' + hospitaldata.id + '">' + hospitaldata.institute_name + '</option>';
+                });
+                $('#hospital_name').append(options);
             }
         });
     });

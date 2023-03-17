@@ -26,7 +26,7 @@
                 <!-- start page title -->
                 <?php
                 $maintitle = "Ecommerce";
-                $title = "Speciality List";
+                $title = "State city List";
                 ?>
                 @include('layouts.admin_layout.breadcrumb')
                 <!-- end page title -->
@@ -36,32 +36,28 @@
                     
                         <div class="card">
                             <div class="card-body">                            
-                            <form action="{{ url('save-speciality') }}" id="userform" name="userform" method="POST" enctype="multipart/form-data" autocomplete="off">
+                            <form action="{{ url('save-state') }}" id="userform" name="userform" method="POST" enctype="multipart/form-data" autocomplete="off">
                             @csrf
                                     
                                     <div class="row" id="form-data" >
                                         <div class="col-12">
-                                           
                                                 <div class="row">
-                                                    <div class="col-sm-6">
-                                                        <div class="mb-3">
-                                                            <label for="speciality">Name of Speciality</label>
-                                                            <input id="speciality" name="speciality" type="text" class="form-control" required >
-                                                            <span id="error_speciality"></span>
-                                                        </div>
-                                                        
-                                                       
-                                                       
-                                                    </div>
-                                                    <div class="col-sm-6">
-                                                    <div class="mb-3">
-                                                            <label for="icon">Upload icon</label>
-                                                            <input id="icon" name="icon" type="file" class="form-control">
-                                                        </div>
-                                                        
-                                    
+                                                    <label for="state" class="col-sm-3 col-form-label">Name of State</label>
+                                                    <div class="col-sm-9 mb-4">
+                                                        <input id="state" name="state" type="text" class="form-control" required >
+                                                        <span id="error_state"></span>
                                                     </div>
                                                 </div>
+                                               
+                                                <div class="row">
+                                                    <label for="city" class="col-sm-3 col-form-label">Name of City</label>
+                                                    <div class="col-sm-9 mb-4">
+                                                        <input id="city" name="city" type="text" class="form-control" required >
+                                                        <span id="error_city"></span>
+                                                    </div>
+                                                </div>
+                                                
+                                               
                                                 <div class="d-flex flex-wrap gap-2">
                                                     <button type="submit" id="create" class="btn btn-primary waves-effect waves-light">Save Changes</button>
                                                     <button type="button" class="btn btn-secondary waves-effect waves-light">Cancel</button>
@@ -109,8 +105,8 @@
                                             <tr>
                                                
                                                 <th class="align-middle">ID</th>
-                                                <th class="align-middle">Icon</th>
-                                                <th class="align-middle">Speciality Name</th>
+                                                <th class="align-middle">State name</th>
+                                                <th class="align-middle">City Name</th>
                                                 
                                                 <th class="align-middle">Action</th>
                                                 
@@ -119,19 +115,19 @@
                                         </thead>
                                         <tbody>
                                             @if($count > 0)
-                                        @foreach ($specialitydata as $data)
+                                        @foreach ($statecitydata as $data)
                                             <tr>
                                                 
                                                 <td>{{ $data->id}}</td>
-                                                <td><img src="{{ asset('uploads/speciality/'.$data->icon) }}" width="70px" height="70px" alt="Image"></td>
-                                                <td>{{ $data->speciality}}</td>
+                                                <td>{{ $data->state}}</td>
+                                                <td>{{ $data->city}}</td>
                                                
                                                 
                                                 <td>
                                                     <div class="d-flex gap-3">
 
-                                                        <!-- <a href="{{ url('speciality-edit/'.$data->id) }}" class="text-success"><i class="mdi mdi-pencil font-size-18"></i></a> -->
-                                                        <form action="{{ url('speciality-delete/'.$data->id) }}" method="POST">
+                                                        
+                                                        <form action="{{ url('state-delete/'.$data->id) }}" method="POST">
                                                         @csrf
                                                         @method('DELETE')
                                         <button type="submit" class="btn btn-danger show_confirm">Delete</button>
@@ -155,7 +151,7 @@
                                             @endif
                                         </tbody>
                                     </table>
-                                    {{ $specialitydata->links() }}
+                                    {{ $statecitydata->links() }}
                                 </div>
                                 
                             </div>
@@ -183,27 +179,55 @@
 <script>
 $(document).ready(function(){
 
- $('#speciality').on('keyup',function(){
-    var error_speciality = '';
-  var speciality = $('#speciality').val();
+ $('#state').on('keyup',function(){
+    var error_state = '';
+  var state = $('#state').val();
   var _token = $('input[name="_token"]').val();
    $.ajax({
-    url:"{{ url('speciality_available_check') }}",
+    url:"{{ url('state_available_check') }}",
     method:"POST",
-    data:{speciality:speciality, _token:_token},
+    data:{state:state, _token:_token},
     success:function(result)
     {
      if(result == 'unique')
      {
-      $('#error_speciality').html('<label class="text-success">speciality Available</label>');
-      $('#speciality').removeClass('has-error');
+      $('#error_state').html('<label class="text-success">state Available</label>');
+      $('#state').removeClass('has-error');
     
       $('#create').attr('disabled', false);
      }
      else
      {
-      $('#error_speciality').html('<label class="text-danger">speciality not Available</label>');
-      $('#speciality').addClass('has-error');
+      $('#error_state').html('<label class="text-danger">state not Available</label>');
+      $('#state').addClass('has-error');
+    
+      $('#create').attr('disabled', 'disabled');
+     }
+    }
+   });
+  
+ });
+ $('#city').on('keyup',function(){
+    var error_city = '';
+  var city = $('#city').val();
+  var _token = $('input[name="_token"]').val();
+   $.ajax({
+    url:"{{ url('city_available_check') }}",
+    method:"POST",
+    data:{city:city, _token:_token},
+    success:function(result)
+    {
+     if(result == 'unique')
+     {
+      $('#error_city').html('<label class="text-success">city Available</label>');
+      $('#city').removeClass('has-error');
+    
+      $('#create').attr('disabled', false);
+     }
+     else
+     {
+      $('#error_city').html('<label class="text-danger">city not Available</label>');
+      $('#city').addClass('has-error');
     
       $('#create').attr('disabled', 'disabled');
      }
