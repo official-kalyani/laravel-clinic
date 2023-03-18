@@ -92,7 +92,7 @@ Route::group(['middleware'=>['auth']],function(){
     Route::get('/add-patient',[App\Http\Controllers\UserController::class,'add_patient']);
     Route::post('/save-patient',[App\Http\Controllers\UserController::class,'save_patient']);
     Route::get('/list-patient',[App\Http\Controllers\UserController::class,'list_patient']);   
-    Route::delete('/patient-delete/{id}',[App\Http\Controllers\UserController::class, 'delete_state']);
+    Route::delete('/patient-delete/{id}',[App\Http\Controllers\UserController::class, 'delete_patient']);
     Route::post('/patient_available_check',[App\Http\Controllers\UserController::class,'state_available_check']);
 // patient end
 

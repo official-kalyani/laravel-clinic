@@ -718,6 +718,9 @@ class UserController extends Controller
     public function add_patient(){
         return view('layouts.admin_layout.add_patient');
     }
+    public function save_patient(){
+        
+    }
     public function dropDownState()
     {
         $states = State::all();
