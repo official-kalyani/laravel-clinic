@@ -6,6 +6,7 @@ use App\Models\DoctorInformation;
 use App\Models\User;
 use App\Models\HospitalData;
 use App\Models\Speciality;
+use App\Models\State;
 use App\Models\StateCity;
 use App\Models\Symptom;
 use Illuminate\Http\Request;
@@ -460,6 +461,7 @@ class UserController extends Controller
         if($request->isMethod('post')){
             $data = $request->all();
             $doctor_data = new DoctorInformation();
+            $doctor_data->hospital_name = $data['hospital_name'];
             $doctor_data->name = $data['name'];
             $doctor_data->email = $data['email'];
             $doctor_data->mobile = $data['mobile'];
@@ -511,6 +513,7 @@ class UserController extends Controller
     public function update_doctor(Request $request,$id){
         $doctordata = DoctorInformation::find($id);
         // dd($doctordata);
+        $doctordata->hospital_name=$request->hospital_name;
         $doctordata->name=$request->name;
         $doctordata->email=$request->email;
         $doctordata->mobile=$request->mobile;
@@ -617,32 +620,64 @@ class UserController extends Controller
     
     // list_state state code start
     public function list_state(){
-        $statecitydata = StateCity::paginate(5);       
-        $count = StateCity::count();
+        $statecitydata = State::paginate(5);       
+        // $statecitydata = StateCity::paginate(5);       
+        $count = State::count();
         return view('layouts.admin_layout.state_city_list',compact('statecitydata','count'));
+    }
+    public function list_city(){
+        $statecitydata = StateCity::paginate(5);       
+        // $statecitydata = StateCity::paginate(5);       
+        $count = State::count();
+        return view('layouts.admin_layout.city_list',compact('statecitydata','count'));
     }
     public function save_state(Request $request){
         if($request->isMethod('post')){
             $data = $request->all();
-            $statedata = new StateCity;
+            $statedata = new State;
             $statedata->state = $data['state'];
-            $statedata->city = $data['city'];
             $statedata->save();
+            // $state_id = $statedata->id;
+            // $citydata = new StateCity;
+            
+            // $citydata->city = $data['city'];
+            // $citydata->state_id = $state_id;
+            // $citydata->save();
+            
             
             return redirect('/list-state-city')->with('success', 'Data added successfully');
         }
     }
+    public function save_city(Request $request){
+        if($request->isMethod('post')){
+            $data = $request->all();
+            $statedata = new StateCity;
+            $statedata->state_id = $data['state'];
+            $statedata->city = $data['city'];
+            $statedata->save();
+          
+            
+            
+            return redirect('/list-city')->with('success', 'Data added successfully');
+        }
+    }
     public function delete_state($id){
-        $statedata = StateCity::find($id);
+        $statedata = State::find($id);
        
          $statedata->delete();
          return redirect('/list-state-city')->with('status', 'Data deleted successfully');
+    }
+    public function delete_city($id){
+        $statedata = StateCity::find($id);
+       
+         $statedata->delete();
+         return redirect('/list-city')->with('status', 'Data deleted successfully');
     }
     public function state_available_check(Request $request){
         if($request->get('state'))
         {
             $state = $request->get('state');
-            $data = DB::table("state_cities")
+            $data = DB::table("states")
             ->where('state', $state)
             ->count();
             if($data > 0)
@@ -673,6 +708,22 @@ class UserController extends Controller
         }
     }
     //  state code end
-    
+
+    // patient code start
+    public function list_patient(){
+        $doctordata = DoctorInformation::paginate(5);       
+        $count = DoctorInformation::count();
+        return view('layouts.admin_layout.list_doctor',compact('doctordata','count'));
+    }
+    public function add_patient(){
+        return view('layouts.admin_layout.add_patient');
+    }
+    public function dropDownState()
+    {
+        $states = State::all();
+        return response()->json($states);
+        // return view('layouts.admin_layout.add_doctor', compact('id', 'items'));
+    }
+    // patient code start
 
 }

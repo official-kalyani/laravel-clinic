@@ -67,7 +67,7 @@ Route::group(['middleware'=>['auth']],function(){
     
 // Doctor code end
 
-// states start
+// symptoms start
     Route::get('/add-symptom',[App\Http\Controllers\UserController::class,'add_symptom']);
     Route::post('/save-symptom',[App\Http\Controllers\UserController::class,'save_symptom']);
     Route::get('/list-symptom',[App\Http\Controllers\UserController::class,'list_symptom']);   
@@ -78,11 +78,23 @@ Route::group(['middleware'=>['auth']],function(){
 // statecity start
     Route::get('/add-state',[App\Http\Controllers\UserController::class,'add_state']);
     Route::post('/save-state',[App\Http\Controllers\UserController::class,'save_state']);
+    Route::post('/save-city',[App\Http\Controllers\UserController::class,'save_city']);
     Route::get('/list-state-city',[App\Http\Controllers\UserController::class,'list_state']);   
+    Route::get('/list-city',[App\Http\Controllers\UserController::class,'list_city']);   
     Route::delete('/state-delete/{id}',[App\Http\Controllers\UserController::class, 'delete_state']);
+    Route::delete('/city-delete/{id}',[App\Http\Controllers\UserController::class, 'delete_city']);
     Route::post('/state_available_check',[App\Http\Controllers\UserController::class,'state_available_check']);
     Route::post('/city_available_check',[App\Http\Controllers\UserController::class,'city_available_check']);
+    Route::get('/dropdown-state', [App\Http\Controllers\UserController::class,'dropDownState']);
 // statecity end
+
+// patient start
+    Route::get('/add-patient',[App\Http\Controllers\UserController::class,'add_patient']);
+    Route::post('/save-patient',[App\Http\Controllers\UserController::class,'save_patient']);
+    Route::get('/list-patient',[App\Http\Controllers\UserController::class,'list_patient']);   
+    Route::delete('/patient-delete/{id}',[App\Http\Controllers\UserController::class, 'delete_state']);
+    Route::post('/patient_available_check',[App\Http\Controllers\UserController::class,'state_available_check']);
+// patient end
 
 });
 Route::post('/impersonate/destroy',[App\Http\Controllers\ImpersonateController::class, 'destroy']);

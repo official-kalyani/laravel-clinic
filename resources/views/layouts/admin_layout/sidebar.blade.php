@@ -38,7 +38,8 @@
                     <!-- <li><a href="{{ url('/add-speciality') }}" key="t-products">Add </a></li> -->
                     <li><a href="{{ url('/list-speciality') }}" data-key="t-product-detail"> Add Speciality</a></li>
                     <li><a href="{{ url('/list-symptom') }}" data-key="t-product-detail"> Add Symptoms</a></li>
-                    <li><a href="{{ url('/list-state-city') }}" data-key="t-product-detail"> Add State/City</a></li>
+                    <li><a href="{{ url('/list-state-city') }}" data-key="t-product-detail"> Add State</a></li>
+                    <li><a href="{{ url('/list-city') }}" data-key="t-product-detail"> Add City</a></li>
                     
                 </ul>
             </li>
@@ -50,6 +51,17 @@
                 <ul class="sub-menu" aria-expanded="false">
                     <li><a href="{{ url('/add-doctor') }}" key="t-products">Add Doctor</a></li>
                     <li><a href="{{ url('/list-doctor') }}" data-key="t-product-detail">List Doctor</a></li>
+                    
+                </ul>
+            </li>
+            <li>
+                <a href="javascript: void(0);" class="has-arrow">
+                <i data-feather="users"></i>
+                    <span data-key="t-ecommerce">Patient Management</span>
+                </a>
+                <ul class="sub-menu" aria-expanded="false">
+                    <li><a href="{{ url('/add-patient') }}" key="t-products">Add Patient</a></li>
+                    <li><a href="{{ url('/list-patient') }}" data-key="t-product-detail">List Patients</a></li>
                     
                 </ul>
             </li>

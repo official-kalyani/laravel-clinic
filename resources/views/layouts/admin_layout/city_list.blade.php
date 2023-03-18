@@ -26,7 +26,7 @@
                 <!-- start page title -->
                 <?php
                 $maintitle = "Ecommerce";
-                $title = "State List";
+                $title = "City List";
                 ?>
                 @include('layouts.admin_layout.breadcrumb')
                 <!-- end page title -->
@@ -36,7 +36,7 @@
                     
                         <div class="card">
                             <div class="card-body">                            
-                            <form action="{{ url('save-state') }}" id="userform" name="userform" method="POST" enctype="multipart/form-data" autocomplete="off">
+                            <form action="{{ url('save-city') }}" id="userform" name="userform" method="POST" enctype="multipart/form-data" autocomplete="off">
                             @csrf
                                     
                                     <div class="row" id="form-data" >
@@ -44,18 +44,20 @@
                                                 <div class="row">
                                                     <label for="state" class="col-sm-3 col-form-label">Name of State</label>
                                                     <div class="col-sm-9 mb-4">
-                                                        <input id="state" name="state" type="text" class="form-control" required >
-                                                        <span id="error_state"></span>
+                                                        <select name="state" id="state" class="form-control select2">
+                                                            <option value="0">Select state</option>
+                                                        </select>
+                                                       
                                                     </div>
                                                 </div>
                                                
-                                                <!-- <div class="row">
+                                                <div class="row">
                                                     <label for="city" class="col-sm-3 col-form-label">Name of City</label>
                                                     <div class="col-sm-9 mb-4">
                                                         <input id="city" name="city" type="text" class="form-control" required >
                                                         <span id="error_city"></span>
                                                     </div>
-                                                </div> -->
+                                                </div>
                                                 
                                                
                                                 <div class="d-flex flex-wrap gap-2">
@@ -106,6 +108,7 @@
                                                
                                                 <th class="align-middle">ID</th>
                                                 <th class="align-middle">State name</th>
+                                                <th class="align-middle">City name</th>
                                                 
                                                 <th class="align-middle">Action</th>
                                                 
@@ -114,32 +117,33 @@
                                         </thead>
                                         <tbody>
                                             @if($count > 0)
-                                        @foreach ($statecitydata as $data)
-                                            <tr>
-                                                
-                                                <td>{{ $data->id}}</td>
-                                                <td>{{ $data->state}}</td>
-                                                
-                                                <td>
-                                                    <div class="d-flex gap-3">
-
+                                                @foreach ($statecitydata as $data)
+                                                    <tr>
                                                         
-                                                        <form action="{{ url('state-delete/'.$data->id) }}" method="POST">
-                                                        @csrf
-                                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-danger show_confirm">Delete</button>
-                                                    </form>
-                                                    
-                                   
-                                    
-                                    
+                                                        <td>{{ $data->id}}</td>
+                                                        <td>{{ $data->state->state}}</td>
+                                                        <td>{{ $data->city}}</td>
+                                                        
+                                                        <td>
+                                                            <div class="d-flex gap-3">
+
+                                                                
+                                                                <form action="{{ url('city-delete/'.$data->id) }}" method="POST">
+                                                                @csrf
+                                                                @method('DELETE')
+                                                                <button type="submit" class="btn btn-danger show_confirm">Delete</button>
+                                                            </form>
+                                                            
+                                        
+                                            
+                                            
 
 
-                                                    </div>
-                                                </td>
-                                            </tr>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
 
-                                            @endforeach
+                                                @endforeach
                                             @else                                            
                                             <tr>
                                                <td colspan="6" style="
@@ -175,7 +179,17 @@
 </script>
 <script>
 $(document).ready(function(){
-
+    $.ajax({
+            url: "{{ url('dropdown-state') }}",
+            dataType: 'json',
+            success: function(data) {
+                var options = '';
+                $.each(data, function(index, state) {
+                    options += '<option value="' + state.id + '">' + state.state + '</option>';
+                });
+                $('#state').append(options);
+            }
+        });
  $('#state').on('keyup',function(){
     var error_state = '';
   var state = $('#state').val();

@@ -62,20 +62,18 @@
                                                    <option value="0">Select hospital</option>
                                                    </select>
                                                 </div>
-                                                <div class="mb-3">
-                                                    <label for="name">Name </label>
-                                                    <input id="name" name="name" type="text" class="form-control" >
-                                                </div>
+                                                
                                                 <div class="mb-3">
                                                     <label for="email">Email</label>
                                                     <input id="email" name="email" type="text" class="form-control">
                                                     <span id="error_email"></span>
                                                 </div>
                                                 <div class="mb-3">
-                                                    <label for="cpassword">Confirm Password</label>
-                                                    <input id="cpassword" name="cpassword" type="password" class="form-control" onkeyup="validate_password()">
-                                                    <span id="wrong_pass_alert"></span>
+                                                    <label for="password">Password</label>
+                                                    <input id="password" name="password" type="password" class="form-control">
+                                                    
                                                 </div>
+                                               
                                                 <div class="mb-3">
                                                     <label for="mobile">Mobile</label>
                                                     <input id="mobile" name="mobile" type="text" class="form-control" onkeyup="this.value=this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1')">
@@ -99,15 +97,19 @@
                                                         
                                             </div>
                                             <div class="col-sm-6">
+                                            <div class="mb-3">
+                                                    <label for="name">Name </label>
+                                                    <input id="name" name="name" type="text" class="form-control" >
+                                                </div>
                                                 <div class="mb-3">
                                                 <label for="designation">Designation </label>
                                                     <input id="designation" name="designation" type="text" class="form-control" >
                                                     
                                                 </div>
                                                 <div class="mb-3">
-                                                    <label for="password">Password</label>
-                                                    <input id="password" name="password" type="password" class="form-control">
-                                                    
+                                                    <label for="cpassword">Confirm Password</label>
+                                                    <input id="cpassword" name="cpassword" type="password" class="form-control" onkeyup="validate_password()">
+                                                    <span id="wrong_pass_alert"></span>
                                                 </div>
                                                 <div class="mb-3">
                                                     <label for="landline">Landline</label>
