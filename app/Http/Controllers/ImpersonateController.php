@@ -17,19 +17,14 @@ class ImpersonateController extends Controller
         
     
         $user = User::where('email',$email)->first();
-        session()->put('impersonate', $user->id);        
-        Auth::loginUsingId($user->id);
+        if ($user) {
+            session()->put('impersonate', $user->id);        
+            // Auth::loginUsingId($user->id);
+        }
+        
         return redirect('/dashboard');
 
-        // if (session()->has('impersonate')) {
-        //     abort(403, 'Cannot impersonate while already impersonating.');
-        // }
-        // session()->put('impersonate', auth()->id());
-        // auth()->login($user);
-        // session()->put('impersonate', auth()->id());
-        // $user = User::where('email',$email)->first();
-        // session()->put('impersonate', $user->id);
-        // Auth::loginUsingId($user->id);
+       
        
     }
     public function destroy(){

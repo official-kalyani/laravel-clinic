@@ -237,10 +237,13 @@
                  </button>
              </div>
              <div class="dropdown d-inline-block">
-             <form action="{{ url('/impersonate/destroy') }}" method="post">
+                @impersonate
+                    <a href="{{ url('/impersonate/destroy') }}" class="btn btn-danger">Back</a>
+                @endimpersonate
+             <!-- <form action="{{ url('/impersonate/destroy') }}" method="post">
                 @csrf
                 <button type="submit" class="btn btn-danger">Back</button>
-            </form>
+            </form> -->
              </div>
 
              <div class="dropdown d-inline-block">

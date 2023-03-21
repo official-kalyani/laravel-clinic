@@ -25,7 +25,7 @@ Route::get('/login-register', ['as'=>'login','uses'=> 'App\Http\Controllers\User
 Route::post('/login', [App\Http\Controllers\UserController::class, 'loginUser']);
 // Route::post('/register', [App\Http\Controllers\UserController::class, 'registerUser']);
 Route::get('/logout', [App\Http\Controllers\UserController::class, 'logoutUser']);
-
+Route::get('/', [App\Http\Controllers\UserController::class, 'loginRegister']);
 
 Route::group(['middleware'=>['auth']],function(){
 
@@ -86,16 +86,20 @@ Route::group(['middleware'=>['auth']],function(){
     Route::post('/state_available_check',[App\Http\Controllers\UserController::class,'state_available_check']);
     Route::post('/city_available_check',[App\Http\Controllers\UserController::class,'city_available_check']);
     Route::get('/dropdown-state', [App\Http\Controllers\UserController::class,'dropDownState']);
+    Route::post('/dropdown-city', [App\Http\Controllers\UserController::class,'dropDownCity']);
 // statecity end
 
 // patient start
     Route::get('/add-patient',[App\Http\Controllers\UserController::class,'add_patient']);
     Route::post('/save-patient',[App\Http\Controllers\UserController::class,'save_patient']);
+    Route::put('/update-patient/{id}',[App\Http\Controllers\UserController::class, 'update_patient']);
     Route::get('/list-patient',[App\Http\Controllers\UserController::class,'list_patient']);   
     Route::delete('/patient-delete/{id}',[App\Http\Controllers\UserController::class, 'delete_patient']);
     Route::post('/patient_available_check',[App\Http\Controllers\UserController::class,'state_available_check']);
+    Route::get('/patient-edit/{id}',[App\Http\Controllers\UserController::class, 'edit_patient']);
+    Route::post('/patient/search',[App\Http\Controllers\UserController::class,'showPatient'])->name('patient.search');
 // patient end
 
 });
-Route::post('/impersonate/destroy',[App\Http\Controllers\ImpersonateController::class, 'destroy']);
+Route::get('/impersonate/destroy',[App\Http\Controllers\ImpersonateController::class, 'destroy']);
 

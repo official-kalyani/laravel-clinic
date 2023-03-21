@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\DoctorInformation;
 use App\Models\User;
 use App\Models\HospitalData;
+use App\Models\PatientInfo;
 use App\Models\Speciality;
 use App\Models\State;
 use App\Models\StateCity;
@@ -710,16 +711,95 @@ class UserController extends Controller
     //  state code end
 
     // patient code start
+    public function delete_patient($id){
+        $patientdata = PatientInfo::find($id);
+        $destination ="uploads/patientfile/".$patientdata->profilepic;
+        if (File::exists($destination)) {
+            File::delete($destination);
+         }
+         $patientdata->delete();
+         return redirect('/list-patient')->with('status', 'Data deleted successfully');
+    }
     public function list_patient(){
-        $doctordata = DoctorInformation::paginate(5);       
-        $count = DoctorInformation::count();
-        return view('layouts.admin_layout.list_doctor',compact('doctordata','count'));
+        $patientdata = PatientInfo::paginate(5);       
+        $count = PatientInfo::count();
+        return view('layouts.admin_layout.list_patient',compact('patientdata','count'));
     }
     public function add_patient(){
         return view('layouts.admin_layout.add_patient');
     }
-    public function save_patient(){
+    public function save_patient(Request $request){
+        if($request->isMethod('post')){
+            $data = $request->all();
+            $doctor_data = new PatientInfo();
+            $doctor_data->name = $data['name'];
+            $doctor_data->password = $data['password'];
+            $doctor_data->email = $data['email'];
+            $doctor_data->gender = $data['gender'];
+            $doctor_data->mobile = $data['mobile'];
+            $doctor_data->dob = $data['dob'];
+            $doctor_data->blood = $data['blood'];
+            $doctor_data->height = $data['height'];
+            $doctor_data->weight = $data['weight'];
+            $doctor_data->patientstatus = $data['patientstatus'];
+            $doctor_data->password = bcrypt($data['password']);
+            
+            $doctor_data->latitude = $data['latitude'];
+            $doctor_data->longitude = $data['longitude'];
+            $doctor_data->state = $data['state'];
+            $doctor_data->full_addrs = $data['full_addrs'];
+            $doctor_data->city = $data['city'];
+           
+            if($request->hasfile('profilepic'))
+            {
+                    $file = $request->file('profilepic');
+                    $extention = $file->getClientOriginalExtension();
+                    $filename = time().'.'.$extention;
+                    $file->move('uploads/patientfile/', $filename);
+                    $doctor_data->profilepic = $filename;
+            }
+            
+            $doctor_data->save();
+            
+            return redirect('/list-patient')->with('success', 'Data added successfully');
+        }
+    }
+    public function update_patient(Request $request,$id){
         
+            
+            $doctor_data =  PatientInfo::find($id);
+            
+            $doctor_data->name = $request->name;
+            $doctor_data->password = $request->password;
+            $doctor_data->email = $request->email;
+            $doctor_data->gender = $request->gender;
+            $doctor_data->mobile = $request->mobile;
+            $doctor_data->dob = $request->dob;
+            $doctor_data->blood = $request->blood;
+            $doctor_data->height = $request->height;
+            $doctor_data->weight = $request->weight;
+            $doctor_data->patientstatus = $request->patientstatus;
+            $doctor_data->password = bcrypt($request->password);
+            
+            $doctor_data->latitude = $request->latitude;
+            $doctor_data->longitude = $request->longitude;
+            $doctor_data->state = $request->state;
+            $doctor_data->full_addrs = $request->full_addrs;
+            $doctor_data->city = $request->city;
+           
+            if($request->hasfile('profilepic'))
+            {
+                    $file = $request->file('profilepic');
+                    $extention = $file->getClientOriginalExtension();
+                    $filename = time().'.'.$extention;
+                    $file->move('uploads/patientfile/', $filename);
+                    $doctor_data->profilepic = $filename;
+            }
+            
+            $doctor_data->update();
+            
+            return redirect('/list-patient')->with('success', 'Data added successfully');
+       
     }
     public function dropDownState()
     {
@@ -727,6 +807,30 @@ class UserController extends Controller
         return response()->json($states);
         // return view('layouts.admin_layout.add_doctor', compact('id', 'items'));
     }
+    public function dropDownCity(Request $request)
+    {
+        $cities = StateCity::where("state_id", $request->stateid)
+                                ->get(["city", "id"]);
+        return response()->json($cities);
+        
+    }
+    public function edit_patient($id){
+        $patientdata = PatientInfo::find($id);
+        $states = State::all();
+        $citynames = StateCity::where('state_id',$states[0]['id'])->get();
+        return view('layouts.admin_layout.patient_edit',compact('patientdata','states','citynames'));
+    }
+    public function showPatient(Request $request)
+    {
+       $patients = PatientInfo::all();
+       if($request->keyword != ''){
+       $patients = PatientInfo::where('name','LIKE','%'.$request->keyword.'%')->get();
+       }
+       return response()->json([
+          'patients' => $patients
+       ]);
+     }
+ 
     // patient code start
 
 }
