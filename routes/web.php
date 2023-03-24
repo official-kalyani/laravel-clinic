@@ -100,6 +100,18 @@ Route::group(['middleware'=>['auth']],function(){
     Route::post('/patient/search',[App\Http\Controllers\UserController::class,'showPatient'])->name('patient.search');
 // patient end
 
+// Appointment start
+    Route::get('/add-new-appointment',[App\Http\Controllers\UserController::class,'add_new_appointment']);
+    Route::post('/dropdown-doctor',[\App\Http\Controllers\UserController::class,'doctorname']);
+    Route::post('/save-new-appointment',[\App\Http\Controllers\UserController::class,'save_new_appointment']);
+    Route::get('/list-new-appointment',[App\Http\Controllers\UserController::class,'list_new_appointment']); 
+    
+// Appointment end
+
+// Appointment master start
+    Route::get('/add-appointment-slot',[App\Http\Controllers\UserController::class,'add_appointment_slot']); 
+// Appointment master end
+
 });
 Route::get('/impersonate/destroy',[App\Http\Controllers\ImpersonateController::class, 'destroy']);
 

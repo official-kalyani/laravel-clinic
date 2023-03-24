@@ -57,10 +57,20 @@
                                     <div class="col-12">
                                         <div class="row">
                                             <div class="col-sm-6">
-                                                <div class="mb-3">
-                                                    <label for="name">Name </label>
-                                                    <input id="name" name="name" type="text" class="form-control" value="{{ $doctordata->name}}">
+                                            <div class="mb-3">
+                                                    <label for="name">Hospital name </label>
+                                                    <select name="hospital_name" id="hospital_name" class="form-control select2">
+                                                   <option value="0">Select hospital</option>
+                                                   @foreach($hospitalanames as $hospitalaname)
+                                                        @if($doctordata->hospital_name == $hospitalaname->id)
+                                                            <option value="{{ $hospitalaname->id }}" selected>{{$hospitalaname->institute_name}}</option>
+                                                        @else
+                                                        <option value="{{ $hospitalaname->id }}" selected>{{$hospitalaname->institute_name}}</option>
+                                                        @endif
+                                                    @endforeach
+                                                   </select>
                                                 </div>
+                                               
                                                 <div class="mb-3">
                                                     <label for="email">Email</label>
                                                     <input id="email" name="email" type="text" class="form-control" value="{{ $doctordata->email}}">
@@ -99,6 +109,10 @@
                                                         
                                             </div>
                                             <div class="col-sm-6">
+                                            <div class="mb-3">
+                                                    <label for="name">Name </label>
+                                                    <input id="name" name="name" type="text" class="form-control" value="{{ $doctordata->name}}">
+                                                </div>
                                                 <div class="mb-3">
                                                 <label for="designation">Designation </label>
                                                     <input id="designation" name="designation" type="text" class="form-control" value="{{ $doctordata->designation}}">

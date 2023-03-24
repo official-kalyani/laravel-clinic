@@ -26,7 +26,7 @@
                 <!-- start page title -->
                 <?php
                 $maintitle = "Ecommerce";
-                $title = "Patient information List";
+                $title = "Appointment List";
                 ?>
                 @include('layouts.admin_layout.breadcrumb')
                 <!-- end page title -->
@@ -65,9 +65,9 @@
                                             <tr>
                                                
                                                 <th class="align-middle">ID</th>
-                                                <th class="align-middle">Name</th>
-                                                <th class="align-middle">Email</th>
-                                                <th class="align-middle">Profile picture</th>
+                                                <th class="align-middle">Doctor Name</th>
+                                                <th class="align-middle">Hospital Name</th>
+                                                <!-- <th class="align-middle">Profile picture</th> -->
                                                 
                                                 <th class="align-middle">Action</th>
                                                 
@@ -76,13 +76,13 @@
                                         </thead>
                                         <tbody>
                                             @if($count > 0)
-                                        @foreach ($patientdata as $data)
+                                        @foreach ($appointmentdata as $data)
                                             <tr>
                                                 
-                                                <td>{{ $data->id}}</td>
-                                                <td>{{ $data->name}}</td>
-                                                <td>{{ $data->email}}</td>
-                                                <td><img src="{{ asset('uploads/patientfile/'.$data->profilepic) }}" width="70px" height="70px" alt="Image"></td>
+                                                <td>{{ $data->id }}</td>
+                                                <td>{{ $data->doctorname->name }}</td>
+                                                <td>{{ $data->hospitaldata->institute_name }}</td>
+                                                <!-- <td><img src="{{ asset('uploads/patientfile/'.$data->profilepic) }}" width="70px" height="70px" alt="Image"></td> -->
                                                
                                                
                                                 
@@ -107,7 +107,7 @@
                                             @endif
                                         </tbody>
                                     </table>
-                                    {{ $patientdata->links() }}
+                                    {{ $appointmentdata->links() }}
                                 </div>
                                 
                             </div>

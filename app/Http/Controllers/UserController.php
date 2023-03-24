@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Appointment;
+use App\Models\AppointmentMaster;
 use App\Models\DoctorInformation;
 use App\Models\User;
 use App\Models\HospitalData;
@@ -509,7 +511,8 @@ class UserController extends Controller
     }
     public function edit_doctor($id){
         $doctordata = DoctorInformation::find($id);
-        return view('layouts.admin_layout.doctor_edit',compact('doctordata'));
+        $hospitalanames = HospitalData::where('id',$doctordata->hospital_name)->get();
+        return view('layouts.admin_layout.doctor_edit',compact('doctordata','hospitalanames'));
     }
     public function update_doctor(Request $request,$id){
         $doctordata = DoctorInformation::find($id);
@@ -831,6 +834,76 @@ class UserController extends Controller
        ]);
      }
  
-    // patient code start
+    // patient code end
+
+    // Appointment code start
+        public function add_new_appointment(){
+            return view('layouts.admin_layout.add_new_appointment');
+        }
+        public function doctorname(Request $request){
+            $hospital_id = $request->hospital_name;
+            // where("state_id", $request->stateid)
+            //                     ->get(["city", "id"]);
+            $doctornames = DoctorInformation::where("hospital_name", $hospital_id)
+            ->where('docstatus','active')
+            ->get(["name", "id"]);
+            return response()->json([
+                'doctornames' => $doctornames
+             ]);
+        }
+        public function save_new_appointment(Request $request){
+            if($request->isMethod('post')){
+                $data = $request->all();
+                $doctor_data = new PatientInfo();
+                $doctor_data->name = $data['name'];
+                $doctor_data->password = $data['password'];
+                $doctor_data->email = $data['email'];
+                $doctor_data->gender = $data['gender'];
+                $doctor_data->mobile = $data['mobile'];
+                $doctor_data->dob = $data['dob'];
+                $doctor_data->blood = $data['blood'];
+                $doctor_data->height = $data['height'];
+                $doctor_data->weight = $data['weight'];
+                $doctor_data->patientstatus = $data['patientstatus'];
+                $doctor_data->password = bcrypt($data['password']);
+                
+                $doctor_data->latitude = $data['latitude'];
+                $doctor_data->longitude = $data['longitude'];
+                $doctor_data->state = $data['state'];
+                $doctor_data->full_addrs = $data['full_addrs'];
+                $doctor_data->city = $data['city'];
+               
+                if($request->hasfile('profilepic'))
+                {
+                        $file = $request->file('profilepic');
+                        $extention = $file->getClientOriginalExtension();
+                        $filename = time().'.'.$extention;
+                        $file->move('uploads/patientfile/', $filename);
+                        $doctor_data->profilepic = $filename;
+                }
+                
+                $doctor_data->save();
+                $last_id = $doctor_data->id;
+                $appointment_data = new Appointment();
+                $appointment_data->hospital_id = $data['hospital_name'];
+                $appointment_data->doctor_id = $data['doc_name'];
+                $appointment_data->appoint_date = $data['appoint_date'];
+                $appointment_data->patient_id = $last_id;
+                $appointment_data->save();
+                return redirect('/add-new-appointment')->with('success', 'Data added successfully');
+            }
+        }
+        public function list_new_appointment(){
+            $appointmentdata = Appointment::paginate(5);
+              
+            $count = Appointment::count();
+            return view('layouts.admin_layout.list_new_appointment',compact('appointmentdata','count'));
+        }
+        public function add_appointment_slot(){
+            $appointment_master = AppointmentMaster::paginate(5);       
+            $count = AppointmentMaster::count();
+            return view('layouts.admin_layout.add_appointment_slot',compact('appointment_master','count'));
+        }
+    // Appointment code end
 
 }
