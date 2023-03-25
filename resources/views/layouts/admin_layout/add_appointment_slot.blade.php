@@ -45,7 +45,7 @@
                                         <div class="col-sm-6">
                                             <div class="mb-3">
                                                 <label for="hospital_id">Hospital name </label>
-                                                <select name="hospital_id" id="hospital_id" class="form-control select2">
+                                                <select name="hospital_id" id="hospital_id" class="form-select select2">
                                                     <option value="0">Select hospital</option>
                                                 </select>
                                             </div>
@@ -53,22 +53,22 @@
                                         <div class="col-sm-6">
                                             <div class="mb-3">
                                                 <label for="doctor_id">Doctor name </label><br>
-                                                <select name="doctor_id" id="doctor_id" class="form-control select2">
+                                                <select name="doctor_id" id="doctor_id" class="form-select select2">
                                                     <option value="0">Select doctor</option>
                                                 </select>
                                             </div>
                                         </div>
                                         <div class="col-sm-6">
                                             <div class="mb-3">
-                                                <label for="date">Date of birth</label>
+                                                <label for="date">Date of appointment</label>
                                                 <input type="date" class="form-control" id="date" name="date" min="{{ date('Y-m-d') }}" max="{{ date('Y-m-d', strtotime('+7 days')) }}">
                                                 
                                             </div>
                                         </div>
                                         <div class="col-sm-6">
                                             <div class="mb-3">
-                                                <label for="icon">Availability  Category</label>
-                                                <select name="doc_name" id="doc_name" class="form-control select2">
+                                                <label for="available_category">Availability  Category</label>
+                                                <select name="available_category" id="available_category" class="form-select select2">
                                                     <option value="0">Select category</option>
                                                     <option value="15min">15mins slot</option>
                                                     <option value="30min">30mins slot</option>
@@ -77,26 +77,133 @@
                                         </div>
                                         <div class="col-sm-6">
                                             <div class="mb-3">
-                                                <label for="icon">Slot Start Time</label>
-                                                <input id="slot_start_time" name="slot_start_time" type="text" class="form-control">
+                                                <label for="slot_start_time">Slot Start Time</label>
+                                                <select name="slot_start_time" id="slot_start_time" class="form-select select2">
+                                                    <option value="0">Select Slot Start Time</option>
+                                                    <option value="6am">6.00 AM</option>
+                                                    <option value="7am">7.00 AM</option>
+                                                    <option value="8am">8.00 AM</option>
+                                                    <option value="9am">9.00 AM</option>
+                                                    <option value="10am">10.00 AM</option>
+                                                    <option value="11am">11.00 AM</option>
+                                                    <option value="12pm">12.00 PM</option>
+                                                    <option value="1pm">1.00 PM</option>
+                                                    <option value="2pm">2.00 PM</option>
+                                                    <option value="3pm">3.00 PM</option>
+                                                    <option value="4pm">4.00 PM</option>
+                                                    <option value="5pm">5.00 PM</option>
+                                                    <option value="6pm">6.00 PM</option>
+                                                    <option value="7pm">7.00 PM</option>
+                                                    <option value="8pm">8.00 PM</option>
+                                                    <option value="9pm">9.00 PM</option>
+                                                    <option value="10pm">10.00 PM</option>
+                                                    <option value="11pm">11.00 PM</option>
+                                                    <option value="12am">12.00 AM</option>
+                                                    <option value="1am">1.00 AM</option>
+                                                    <option value="2am">2.00 AM</option>
+                                                    <option value="3am">3.00 AM</option>
+                                                    <option value="4am">4.00 AM</option>
+                                                    <option value="5am">5.00 AM</option>
+                                                </select>
                                             </div>
                                         </div>
                                         <div class="col-sm-6">
                                             <div class="mb-3">
-                                                <label for="icon">Slot End Time</label>
-                                                <input id="slot_end_time" name="slot_end_time" type="text" class="form-control">
+                                                <label for="slot_end_time">Slot End Time</label>
+                                                <select name="slot_end_time" id="slot_end_time" class="form-select select2">
+                                                    <option value="0">Select Slot Start Time</option>
+                                                    <option value="6am">6.00 AM</option>
+                                                    <option value="7am">7.00 AM</option>
+                                                    <option value="8am">8.00 AM</option>
+                                                    <option value="9am">9.00 AM</option>
+                                                    <option value="10am">10.00 AM</option>
+                                                    <option value="11am">11.00 AM</option>
+                                                    <option value="12pm">12.00 PM</option>
+                                                    <option value="1pm">1.00 PM</option>
+                                                    <option value="2pm">2.00 PM</option>
+                                                    <option value="3pm">3.00 PM</option>
+                                                    <option value="4pm">4.00 PM</option>
+                                                    <option value="5pm">5.00 PM</option>
+                                                    <option value="6pm">6.00 PM</option>
+                                                    <option value="7pm">7.00 PM</option>
+                                                    <option value="8pm">8.00 PM</option>
+                                                    <option value="9pm">9.00 PM</option>
+                                                    <option value="10pm">10.00 PM</option>
+                                                    <option value="11pm">11.00 PM</option>
+                                                    <option value="12am">12.00 AM</option>
+                                                    <option value="1am">1.00 AM</option>
+                                                    <option value="2am">2.00 AM</option>
+                                                    <option value="3am">3.00 AM</option>
+                                                    <option value="4am">4.00 AM</option>
+                                                    <option value="5am">5.00 AM</option>
+                                                </select>
+                                                
                                             </div>
                                         </div>
                                         <div class="col-sm-6">
                                             <div class="mb-3">
-                                                <label for="icon">Break Start Time</label>
-                                                <input id="break_start_time" name="break_start_time" type="text" class="form-control">
+                                                <label for="break_start_time">Break Start Time</label>
+                                                <select name="break_start_time" id="break_start_time" class="form-select select2">
+                                                    <option value="0">Select Slot Start Time</option>
+                                                    <option value="6am">6.00 AM</option>
+                                                    <option value="7am">7.00 AM</option>
+                                                    <option value="8am">8.00 AM</option>
+                                                    <option value="9am">9.00 AM</option>
+                                                    <option value="10am">10.00 AM</option>
+                                                    <option value="11am">11.00 AM</option>
+                                                    <option value="12pm">12.00 PM</option>
+                                                    <option value="1pm">1.00 PM</option>
+                                                    <option value="2pm">2.00 PM</option>
+                                                    <option value="3pm">3.00 PM</option>
+                                                    <option value="4pm">4.00 PM</option>
+                                                    <option value="5pm">5.00 PM</option>
+                                                    <option value="6pm">6.00 PM</option>
+                                                    <option value="7pm">7.00 PM</option>
+                                                    <option value="8pm">8.00 PM</option>
+                                                    <option value="9pm">9.00 PM</option>
+                                                    <option value="10pm">10.00 PM</option>
+                                                    <option value="11pm">11.00 PM</option>
+                                                    <option value="12am">12.00 AM</option>
+                                                    <option value="1am">1.00 AM</option>
+                                                    <option value="2am">2.00 AM</option>
+                                                    <option value="3am">3.00 AM</option>
+                                                    <option value="4am">4.00 AM</option>
+                                                    <option value="5am">5.00 AM</option>
+                                                </select>
+                                                
                                             </div>
                                         </div>
                                         <div class="col-sm-6">
                                             <div class="mb-3">
-                                                <label for="icon">Break End Time</label>
-                                                <input id="break_end_time" name="break_end_time" type="text" class="form-control">
+                                                <label for="break_end_time">Break End Time</label>
+                                                <select name="break_end_time" id="break_end_time" class="form-select select2">
+                                                    <option value="0">Select Slot Start Time</option>
+                                                    <option value="6am">6.00 AM</option>
+                                                    <option value="7am">7.00 AM</option>
+                                                    <option value="8am">8.00 AM</option>
+                                                    <option value="9am">9.00 AM</option>
+                                                    <option value="10am">10.00 AM</option>
+                                                    <option value="11am">11.00 AM</option>
+                                                    <option value="12pm">12.00 PM</option>
+                                                    <option value="1pm">1.00 PM</option>
+                                                    <option value="2pm">2.00 PM</option>
+                                                    <option value="3pm">3.00 PM</option>
+                                                    <option value="4pm">4.00 PM</option>
+                                                    <option value="5pm">5.00 PM</option>
+                                                    <option value="6pm">6.00 PM</option>
+                                                    <option value="7pm">7.00 PM</option>
+                                                    <option value="8pm">8.00 PM</option>
+                                                    <option value="9pm">9.00 PM</option>
+                                                    <option value="10pm">10.00 PM</option>
+                                                    <option value="11pm">11.00 PM</option>
+                                                    <option value="12am">12.00 AM</option>
+                                                    <option value="1am">1.00 AM</option>
+                                                    <option value="2am">2.00 AM</option>
+                                                    <option value="3am">3.00 AM</option>
+                                                    <option value="4am">4.00 AM</option>
+                                                    <option value="5am">5.00 AM</option>
+                                                </select>
+                                                
                                             </div>
                                         </div>
                                     </div>
@@ -147,8 +254,11 @@
                                             <tr>
                                                
                                                 <th class="align-middle">ID</th>
+                                                <th class="align-middle">Doctor Name</th>
                                                 <th class="align-middle">Hospital Name</th>
-                                                <th class="align-middle">Date</th>                                                
+                                                <th class="align-middle">Slot start-end time</th>
+                                                <th class="align-middle">Break start-end time</th>
+                                                <th class="align-middle">Appointment date</th>                                               
                                                 <th class="align-middle">Action</th>
                                                 
                                                 
@@ -160,8 +270,11 @@
                                             <tr>
                                                 
                                                 <td>{{ $data->id}}</td>
-                                                <td><img src="{{ asset('uploads/symptom/'.$data->icon) }}" width="70px" height="70px" alt="Image"></td>
-                                                <td>{{ $data->symptom}}</td>
+                                                <td>{{ $data->doctorname->name }}</td>
+                                                <td>{{ $data->hospitaldata->institute_name }}</td>
+                                                <td>{{ $data->slot_start_time }} - {{ $data->slot_end_time}}</td>
+                                                <td>{{ $data->break_start_time }} - {{ $data->break_end_time}}</td>
+                                                <td>{{ $data->date }}</td>
                                                
                                                 
                                                 <td>

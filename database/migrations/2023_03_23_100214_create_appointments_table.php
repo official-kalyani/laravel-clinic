@@ -19,6 +19,7 @@ class CreateAppointmentsTable extends Migration
             $table->string('doctor_id');
             $table->string('appoint_date');
             $table->string('patient_id');
+            $table->string('slot_time');
             $table->timestamps();
         });
     }

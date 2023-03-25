@@ -884,10 +884,12 @@ class UserController extends Controller
                 
                 $doctor_data->save();
                 $last_id = $doctor_data->id;
+
                 $appointment_data = new Appointment();
                 $appointment_data->hospital_id = $data['hospital_name'];
                 $appointment_data->doctor_id = $data['doc_name'];
                 $appointment_data->appoint_date = $data['appoint_date'];
+                $appointment_data->slot_time = implode(',',$data['slot_time']);
                 $appointment_data->patient_id = $last_id;
                 $appointment_data->save();
                 return redirect('/add-new-appointment')->with('success', 'Data added successfully');
@@ -903,6 +905,28 @@ class UserController extends Controller
             $appointment_master = AppointmentMaster::paginate(5);       
             $count = AppointmentMaster::count();
             return view('layouts.admin_layout.add_appointment_slot',compact('appointment_master','count'));
+        }
+        public function save_appointment_master(Request $request){
+            if ($request->isMethod('post')) {
+                $data = $request->all();
+                $appointment_data = new AppointmentMaster();
+                $appointment_data->hospital_id = $data['hospital_id'];
+                $appointment_data->doctor_id = $data['doctor_id'];
+                $appointment_data->date = $data['date'];
+                $appointment_data->available_category = $data['available_category'];
+                $appointment_data->slot_start_time = $data['slot_start_time'];
+                $appointment_data->slot_end_time = $data['slot_end_time'];
+                $appointment_data->break_start_time = $data['break_start_time'];
+                $appointment_data->break_end_time = $data['break_end_time'];
+                $appointment_data->save();
+                return redirect('/add-appointment-slot')->with('success', 'Data added successfully');
+            }
+        }
+        public function available_slot(Request $request){
+            $appointment_data = AppointmentMaster::where("doctor_id", $request->doctor_id)
+                                ->first(["available_category", "slot_start_time","slot_end_time","break_start_time","break_end_time"]);
+            $template = view('layouts.admin_layout.available_slot_ajax',compact('appointment_data'))->render();
+            return response()->json(['template' => $template]);
         }
     // Appointment code end
 

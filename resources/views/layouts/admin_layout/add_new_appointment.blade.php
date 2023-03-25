@@ -17,7 +17,29 @@
     
     @include('layouts.admin_layout.head-style')
 
+    <style>
+        .custom-control-label{
+            display: inline-block;
+            margin: 10px;
+            border: 2px solid #ccc;
+            padding: 10px;
+            cursor: pointer;
+        }
+        input[type="checkbox"] {
+            display: none; /* hide the default checkbox */
+        }
+        .disabled-checkbox {
+            cursor: not-allowed;
+            color: #aaa;
+        }
 
+
+input[type="checkbox"]:checked + label {
+    background-color: #0099ff;
+    color: #fff;
+}
+
+</style>
 </head>
 <body data-topbar="dark">
 <!-- Begin page -->
@@ -246,6 +268,51 @@
                                                             
                                                         </div>
                                                     </div>
+                                                    <!-- <div class="row">
+                                                        <div class="col-sm-4">
+                                                        </div>
+                                                        <div class="col-sm-4">
+                                                        </div>
+                                                        <div class="col-sm-4">
+                                                        <div class="mb-3">
+                                                                <div class="d-flex flex-wrap gap-2">
+                                                                    <button type="submit" id="create" class="btn btn-primary waves-effect waves-light">Save Changes</button>
+                                                                    <button type="button" class="btn btn-secondary waves-effect waves-light">Cancel</button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div> -->
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- end of row -->
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h4 class="card-title">Available Slots</h4>
+                                            <p class="card-title-desc">Fill all information below</p>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="row" id="form-data" >
+                                                <div class="col-12">
+                                                    <div class="row items-container">
+                                                        <!-- <div class="col-sm-6"> -->
+                                                            
+                                                        
+                                                        
+                                                    
+
+
+                                                            
+                                                           
+                                                        <!-- </div> -->
+                                                        
+                                                        
+                                                    </div>
                                                     <div class="row">
                                                         <div class="col-sm-4">
                                                         </div>
@@ -314,6 +381,23 @@
                             $("#doc_name").append('<option value="' + value
                                 .id + '">' + value.name + '</option>');
                         });
+                        
+                    }
+                });
+            });
+        $('#doc_name').on('change', function () {
+                var doctor_id = this.value;
+                
+                $.ajax({
+                    url: "{{url('available-slot')}}",
+                    type: "POST",
+                    data: {
+                        doctor_id: doctor_id,
+                        _token: '{{csrf_token()}}'
+                    },                    
+                    success: function (result) {
+                        $('.items-container').html(result.template);
+                        
                         
                     }
                 });

@@ -110,6 +110,8 @@ Route::group(['middleware'=>['auth']],function(){
 
 // Appointment master start
     Route::get('/add-appointment-slot',[App\Http\Controllers\UserController::class,'add_appointment_slot']); 
+    Route::post('/save-appointment-master',[App\Http\Controllers\UserController::class,'save_appointment_master']); 
+    Route::post('/available-slot',[App\Http\Controllers\UserController::class,'available_slot']); 
 // Appointment master end
 
 });
