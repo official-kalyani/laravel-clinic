@@ -28,11 +28,11 @@ class ImpersonateController extends Controller
        
     }
     public function destroy(){
-//         $value = $request->session()->get('key');
-// dd($value);
-        if (session()->has('impersonate')) {
-        //    echo 'x';exit();
-            // auth()->onceUsingId(session()->get('impersonate'));
+    //  $value = $request->session()->get('key');
+    // dd($value);
+    if (session()->has('impersonate')) {
+        //echo 'x';exit();
+        //auth()->onceUsingId(session()->get('impersonate'));
             session()->forget('impersonate');
             
         }

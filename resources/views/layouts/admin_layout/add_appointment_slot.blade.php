@@ -32,7 +32,7 @@
                 <!-- end page title -->
 
                 <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-md-12">
                     
                         <div class="card">
                             <div class="card-body">                            
@@ -219,12 +219,8 @@
                     </div>
                 </div>
                 <!-- end row -->
-
-
-
-
-            </div>
-                    <div class="col-md-6">
+<div class="row">
+<div class="col-md-12">
                     @if (session('status'))
                         <h6 class="alert alert-success">{{ session('status') }}</h6>
                     @endif
@@ -281,7 +277,7 @@
                                                     <div class="d-flex gap-3">
 
                                                         <!-- <a href="{{ url('speciality-edit/'.$data->id) }}" class="text-success"><i class="mdi mdi-pencil font-size-18"></i></a> -->
-                                                        <form action="{{ url('symptom-delete/'.$data->id) }}" method="POST">
+                                                        <form action="{{ url('appointment-master-delete/'.$data->id) }}" method="POST">
                                                         @csrf
                                                         @method('DELETE')
                                                         <button type="submit" class="btn btn-danger show_confirm">Delete</button>
@@ -311,6 +307,12 @@
                             </div>
                         </div>
                     </div>
+</div>
+
+
+
+            </div>
+                    
                     
                      <!-- container-fluid -->
         </div>

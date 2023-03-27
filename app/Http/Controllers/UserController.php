@@ -928,6 +928,11 @@ class UserController extends Controller
             $template = view('layouts.admin_layout.available_slot_ajax',compact('appointment_data'))->render();
             return response()->json(['template' => $template]);
         }
-    // Appointment code end
-
+        public function appointment_master_delete($id){
+            $patientdata = AppointmentMaster::find($id);
+             $patientdata->delete();
+             return redirect('/add-appointment-slot')->with('status', 'Data deleted successfully');
+        }
+    // Appointment master code end
+        
 }

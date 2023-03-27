@@ -98,7 +98,7 @@ input[type="checkbox"]:checked + label {
                                             <div class="col-sm-4">
                                             <div class="mb-3">
                                                     <label for="appoint_date">Appointment Date</label>
-                                                    <input type="date" class="form-control" id="appoint_date" name="appoint_date" min="{{ date('Y-m-d') }}" max="{{ date('Y-m-d', strtotime('+5 days')) }}">
+                                                    <input type="date" class="form-control" id="appoint_date" name="appoint_date" min="{{ date('Y-m-d') }}" max="{{ date('Y-m-d', strtotime('+4 days')) }}">
                                                     <!-- <input id="appoint_date" name="appoint_date" type="date" class="form-control"> -->
                                                 </div>
                                             </div>
