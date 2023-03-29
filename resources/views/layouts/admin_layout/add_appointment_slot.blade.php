@@ -61,7 +61,7 @@
                                         <div class="col-sm-6">
                                             <div class="mb-3">
                                                 <label for="date">Date of appointment</label>
-                                                <input type="date" class="form-control" id="date" name="date" min="{{ date('Y-m-d') }}" max="{{ date('Y-m-d', strtotime('+7 days')) }}">
+                                                <input type="date" class="form-control" id="date" name="date" min="{{ date('Y-m-d') }}" max="{{ date('Y-m-d', strtotime('+7 days')) }}" value="{{ date('Y-m-d') }}">
                                                 
                                             </div>
                                         </div>

@@ -837,13 +837,32 @@ class UserController extends Controller
     // patient code end
 
     // Appointment code start
+
         public function add_new_appointment(){
             return view('layouts.admin_layout.add_new_appointment');
         }
+        public function add_existing_appointment(){
+            return view('layouts.admin_layout.add_existing_appointment');
+        }
+        public function search_patient_name(Request $request){
+            
+                $keyword = $request->keyword;
+                $patientdata = PatientInfo::where('id', $keyword)->orWhere('name', 'like', '%' . $keyword . '%')->get();
+            
+                return response()->json(['patientdata' => $patientdata]);
+          
+        }
+        public function get_patient_details(Request $request){
+            
+                $keyword = $request->name;
+                $patientdetails = PatientInfo::where('name',  $keyword )->first();
+            
+                return response()->json(['patientdetails' => $patientdetails]);
+          
+        }
         public function doctorname(Request $request){
             $hospital_id = $request->hospital_name;
-            // where("state_id", $request->stateid)
-            //                     ->get(["city", "id"]);
+            
             $doctornames = DoctorInformation::where("hospital_name", $hospital_id)
             ->where('docstatus','active')
             ->get(["name", "id"]);
@@ -889,7 +908,8 @@ class UserController extends Controller
                 $appointment_data->hospital_id = $data['hospital_name'];
                 $appointment_data->doctor_id = $data['doc_name'];
                 $appointment_data->appoint_date = $data['appoint_date'];
-                $appointment_data->slot_time = implode(',',$data['slot_time']);
+                $appointment_data->slot_time = $data['slot_time'];
+                // $appointment_data->slot_time = implode(',',$data['slot_time']);
                 $appointment_data->patient_id = $last_id;
                 $appointment_data->save();
                 return redirect('/add-new-appointment')->with('success', 'Data added successfully');
@@ -901,6 +921,15 @@ class UserController extends Controller
             $count = Appointment::count();
             return view('layouts.admin_layout.list_new_appointment',compact('appointmentdata','count'));
         }
+        
+        // public function available_selected_slot(Request $request){
+        //     $appointment_data = AppointmentMaster::where("doctor_id", $request->doctor_id)
+        //                         ->first(["available_category", "slot_start_time","slot_end_time",                "break_start_time","break_end_time"]);
+        //     $template = view('layouts.admin_layout.available_slot_ajax',compact('appointment_data'))->render();
+        //     return response()->json(['template' => $template]);
+        // }
+
+        // appointment master code start
         public function add_appointment_slot(){
             $appointment_master = AppointmentMaster::paginate(5);       
             $count = AppointmentMaster::count();
@@ -925,7 +954,9 @@ class UserController extends Controller
         public function available_slot(Request $request){
             $appointment_data = AppointmentMaster::where("doctor_id", $request->doctor_id)
                                 ->first(["available_category", "slot_start_time","slot_end_time","break_start_time","break_end_time"]);
-            $template = view('layouts.admin_layout.available_slot_ajax',compact('appointment_data'))->render();
+            $selected_slot_time = Appointment::where('doctor_id',$request->doctor_id)->first();
+            
+            $template = view('layouts.admin_layout.available_slot_ajax',compact('appointment_data','selected_slot_time'))->render();
             return response()->json(['template' => $template]);
         }
         public function appointment_master_delete($id){

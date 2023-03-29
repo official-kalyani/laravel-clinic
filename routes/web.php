@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\ProductsController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Auth;
 
 /*
@@ -102,9 +103,16 @@ Route::group(['middleware'=>['auth']],function(){
 
 // Appointment start
     Route::get('/add-new-appointment',[App\Http\Controllers\UserController::class,'add_new_appointment']);
+    Route::get('/add-existing-appointment',[App\Http\Controllers\UserController::class,'add_existing_appointment']);
+
+    Route::get('/search-patient-name',[App\Http\Controllers\UserController::class,'search_patient_name']);
+    Route::get('/get-patient-details',[App\Http\Controllers\UserController::class,'get_patient_details']);
+
     Route::post('/dropdown-doctor',[\App\Http\Controllers\UserController::class,'doctorname']);
     Route::post('/save-new-appointment',[\App\Http\Controllers\UserController::class,'save_new_appointment']);
     Route::get('/list-new-appointment',[App\Http\Controllers\UserController::class,'list_new_appointment']); 
+    // Route::get('/available-selected-slot',[App\Http\Controllers\UserController::class,'available_selected_slot']); 
+    Route::post('/update-existing-appointment',[\App\Http\Controllers\UserController::class,'update_existing_appointment']);
     
 // Appointment end
 
@@ -114,6 +122,8 @@ Route::group(['middleware'=>['auth']],function(){
     Route::post('/available-slot',[App\Http\Controllers\UserController::class,'available_slot']);
     Route::delete('/appointment-master-delete/{id}',[App\Http\Controllers\UserController::class, 'appointment_master_delete']); 
 // Appointment master end
+
+
 
 });
 Route::get('/impersonate/destroy',[App\Http\Controllers\ImpersonateController::class, 'destroy']);
