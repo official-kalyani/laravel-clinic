@@ -12,6 +12,7 @@ use App\Models\Speciality;
 use App\Models\State;
 use App\Models\StateCity;
 use App\Models\Symptom;
+use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -844,6 +845,51 @@ class UserController extends Controller
         public function add_existing_appointment(){
             return view('layouts.admin_layout.add_existing_appointment');
         }
+        public function update_existing_appointment(Request $request){
+            if ($request->isMethod('post')) {
+                $data = $request->all();
+                // echo '<pre>';print_r($data);
+                $exist_appointment = new Appointment();
+                $exist_appointment->hospital_id = $data['hospital_id'];
+                $exist_appointment->doctor_id = $data['doctor_id'];
+                $exist_appointment->appoint_date = $data['appoint_date'];
+                // $exist_appointment->appoint_date = $data['appoint_date'];
+                $exist_appointment->patient_id = $data['patient_id'];
+                $exist_appointment->slot_time = $data['slot_time'];
+                $exist_appointment->save();
+            }
+            return redirect('/list-new-appointment')->with('success', 'Data added successfully');
+            // return view('layouts.admin_layout.list_new_appointment');
+        }
+        public function update_appointment(Request $request,$patient_id){
+            
+            
+                
+                $data = $request->all();
+                
+                $exist_appointment = Appointment::where('patient_id',$patient_id)->first();
+                $exist_appointment->hospital_id = $data['hospital_id'];
+                $exist_appointment->doctor_id = $data['doctor_id'];
+                $exist_appointment->appoint_date = $data['appoint_date'];
+                $exist_appointment->slot_time = $data['slot_time'];
+                $exist_appointment->update();
+            
+            return redirect('/list-new-appointment')->with('success', 'Data added successfully');
+            
+        }
+        public function appointment_delete($id){
+            $appointdata = Appointment::find($id);
+            $appointdata->delete();
+            return redirect('/list-new-appointment')->with('status', 'Data deleted successfully');
+        }
+        public function appointment_edit($patient_id){
+            $appointment_data = Appointment::where('patient_id',$patient_id)->first();
+            // dd($appointment_data);
+            $hospitalinfo = HospitalData::all();
+            $docinfo = DoctorInformation::where('hospital_name',$hospitalinfo[0]['id'])->get();
+            return view('layouts.admin_layout.appointment_edit',compact('appointment_data','docinfo','hospitalinfo'));
+            
+        }
         public function search_patient_name(Request $request){
             
                 $keyword = $request->keyword;
@@ -916,9 +962,24 @@ class UserController extends Controller
             }
         }
         public function list_new_appointment(){
-            $appointmentdata = Appointment::paginate(5);
+            $date = request()->input('date');
+            // dd($date);
+            if ($date) {
+               
+                // Convert the date string to a DateTime object
+                $dateTime = DateTime::createFromFormat('d-m-Y', $date);
+                
+                // Retrieve data for the specified date
+                $appointmentdata = Appointment::where('appoint_date', $dateTime->format('Y-m-d'))->paginate(5);
+                
+                $count = Appointment::count();
+            }else{
+                $appointmentdata = Appointment::paginate(5);
+                $count = Appointment::count();
+            }
+            
               
-            $count = Appointment::count();
+            
             return view('layouts.admin_layout.list_new_appointment',compact('appointmentdata','count'));
         }
         
@@ -959,11 +1020,32 @@ class UserController extends Controller
             $template = view('layouts.admin_layout.available_slot_ajax',compact('appointment_data','selected_slot_time'))->render();
             return response()->json(['template' => $template]);
         }
+        public function show_available_slot(Request $request){
+           
+            $appointment_data = AppointmentMaster::where("doctor_id", $request->doc_id)
+            ->first(["available_category", "slot_start_time","slot_end_time","break_start_time","break_end_time"]);
+            
+            $selected_slot_time = Appointment::where('doctor_id',$request->doc_id)->where('patient_id',$request->patient_id)->first();
+
+            $template = view('layouts.admin_layout.show_available_slot_ajax',compact('appointment_data','selected_slot_time'))->render();
+            return response()->json(['template' => $template]);
+        }
         public function appointment_master_delete($id){
             $patientdata = AppointmentMaster::find($id);
              $patientdata->delete();
              return redirect('/add-appointment-slot')->with('status', 'Data deleted successfully');
         }
     // Appointment master code end
+
+
+    // consultation code start 
+    public function add_consultation($patient_id){
+        $appointment_data = Appointment::where('patient_id',$patient_id)->first();
+        $hospitalinfo = HospitalData::all();
+        $docinfo = DoctorInformation::where('hospital_name',$hospitalinfo[0]['id'])->get();
+            // return view('layouts.admin_layout.appointment_edit',compact('appointment_data','docinfo','hospitalinfo'));
+        return view('layouts.admin_layout.add_consultation',compact('appointment_data','docinfo','hospitalinfo'));
+    }
+    // consultation code end
         
 }

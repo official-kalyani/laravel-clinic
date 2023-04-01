@@ -14,4 +14,7 @@ class Appointment extends Model
     public function hospitaldata(){
         return $this->belongsTo(HospitalData::class,'hospital_id');
     }
+    public function patientdata(){
+        return $this->belongsTo(PatientInfo::class,'patient_id');
+    }
 }

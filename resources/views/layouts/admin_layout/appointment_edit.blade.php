@@ -61,13 +61,14 @@ input[type="radio"]:checked + label {
                 <!-- start page title -->
                 <?php
                 $maintitle = "Ecommerce";
-                $title = "Add Existing Appointment";
+                $title = "Update Appointment";
                 ?>
                 @include('layouts.admin_layout.breadcrumb')
                 <!-- end page title -->
 
-                <form action="{{ url('update-existing-appointment') }}" id="userform" name="userform" method="POST" enctype="multipart/form-data" autocomplete="off">
-                                @csrf
+                <form action="{{ url('update-appointment/'.$appointment_data->patient_id) }}" id="userform" name="userform" method="POST"  autocomplete="off">
+                @csrf
+                @method('PUT')
                 <div class="row">
                     <div class="col-12">
                         <div class="card">
@@ -84,7 +85,13 @@ input[type="radio"]:checked + label {
                                                 <div class="mb-3">
                                                     <label for="name">Hospital name </label>
                                                     <select name="hospital_id" id="hospital_id" class="form-control select2">
-                                                   <option value="0">Select hospital</option>
+                                                    @foreach($hospitalinfo as $hospitalname)
+                                                        @if($hospitalname->id == $appointment_data->hospital_id)
+                                                            <option value="{{ $hospitalname->id }}" selected>{{$hospitalname->institute_name}}</option>
+                                                        @else
+                                                            <option value="{{ $hospitalname->id }}">{{$hospitalname->institute_name}}</option>
+                                                        @endif
+                                                    @endforeach
                                                    </select>
                                                 </div>
                                                
@@ -93,15 +100,22 @@ input[type="radio"]:checked + label {
                                             <div class="col-sm-4">
                                                 <div class="mb-3">
                                                     <label for="doctor_id">Doctor name </label><br>
+                                                    <input type="hidden" name="doc_id" value="{{ $appointment_data->doctor_id }}" id="doc_id">
                                                     <select name="doctor_id" id="doctor_id" class="form-control select2">
-                                                   <option value="0">Select doctor</option>
+                                                    @foreach($docinfo as $docname)
+                                                                    @if($appointment_data->doctor_id == $docname->id)
+                                                                        <option value="{{ $docname->id }}" selected>{{$docname->name}}</option>
+                                                                    @else
+                                                                        <option value="{{ $docname->id }}">{{ $docname->name }}</option>
+                                                                    @endif
+                                                                @endforeach
                                                    </select>
                                                 </div>
                                             </div>
                                             <div class="col-sm-4">
                                                 <div class="mb-3">
                                                     <label for="appoint_date">Appointment Date</label>
-                                                    <input type="date" class="form-control" id="appoint_date" name="appoint_date" min="{{ date('Y-m-d') }}" max="{{ date('Y-m-d', strtotime('+4 days')) }}" value="{{ date('Y-m-d') }}">
+                                                    <input type="date" class="form-control" id="appoint_date" name="appoint_date" min="{{ date('Y-m-d') }}" max="{{ date('Y-m-d', strtotime('+4 days')) }}" value="{{ $appointment_data->appoint_date }}">
                                                    
                                                 </div>
                                             </div>
@@ -114,38 +128,9 @@ input[type="radio"]:checked + label {
                                 </div>
                             </div>
                             <!-- end of row -->
-                            <div class="row">
-                                <div class="col-12">
-                                    <div class="card">
-                                        <div class="card-header">
-                                            <h4 class="card-title">Patient Search</h4>
-                                            <!-- <p class="card-title-desc">Fill all information below</p> -->
-                                        </div>
-                                        <div class="card-body">
-                                            <div class="row" id="form-data" >
-                                                <div class="col-md-6">
-                                                <div class="search">
-                                                
-                                                    <input type="text" name="keyword" id="keyword" placeholder="Search by patient id or patient name" class="form-control" >
-                                                    <button id="search_patient"  type="button">Search</button>
-                                                
-                                                </div>
-                                                </div>
-                                                <div class="col-md-6"></div>
-                                            </div>
-                                            <div class="row mt-4">
-                                                <div class="col-md-12">
-                                                <div id="patient-container" style="display: none;"></div>
-                                                <!-- <span id="patient-btn" class="btn btn-info" style="display: none;"></span> -->
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- end of row -->
+                           
                             
-                            <div class="row patient-detail" style="display: none;">
+                            <div class="row patient-detail" >
                                 <div class="col-12">
                                     <div class="card">
                                         <div class="card-header">
@@ -159,71 +144,71 @@ input[type="radio"]:checked + label {
                                                     <div class="col-sm-6">
                                                     <div class="mb-3">
                                                         <label for="name">Name :-</label>
-                                                        <input type="hidden" name="patient_id" id="patient_id" />
-                                                        <span id="name"></span>
+                                                        <input type="hidden" name="patient_id" id="patient_id" value="{{ $appointment_data->patient_id }}"/>
+                                                        <span id="name">{{ $appointment_data->patientdata->name }}</span>
                                                     </div>
                                                                                                     
                                                 <div class="mb-3">
                                                     <label for="email">Email:-</label>
-                                                    <span id="email"></span>
+                                                    <span id="email">{{ $appointment_data->patientdata->email }}</span>
                                                 </div>
                                                 
                                                
                                                 <div class="mb-3">
                                                     <label for="mobile">Mobile:-</label>
-                                                    <span id="mobile"></span>
+                                                    <span id="mobile">{{ $appointment_data->patientdata->mobile }}</span>
                                                 </div>
                                                 
                                                 <div class="mb-3">
                                                     <label for="dob">Date of birth:-</label>
-                                                    <span id="dob"></span>
+                                                    <span id="dob">{{ $appointment_data->patientdata->dob }}</span>
                                                 </div>
                                                 
                                                 <div class="mb-3">
                                                     <label for="patientstatus">Status:-</label>
-                                                    <span id="patientstatus"></span>
+                                                    <span id="patientstatus">{{ $appointment_data->patientdata->patientstatus }}</span>
                                                 </div>
                                                 <div class="mb-3">
                                                     <label for="full_addrs">Address :-</label>
-                                                    <span id="full_addrs"></span>
+                                                    <span id="full_addrs">{{ $appointment_data->patientdata->full_addrs }}</span>
                                                 </div>  
                                                 <div class="mb-3">
                                                     <label for="state" class="form-label">State:- </label>
-                                                    <span id="state"></span>
+                                                    <span id="state">{{ $appointment_data->patientdata->statename->state }}</span>
                                                 </div>
                                                            
                                             </div>
                                             <div class="col-sm-6">                                               
                                                 <div class="mb-3">
                                                     <label for="gender">Gender:-</label>
-                                                    <span id="gender"></span>
+                                                    <span id="gender">{{ $appointment_data->patientdata->gender }}</span>
                                                    
                                                 </div>
                                                 
                                                 <div class="mb-3">
                                                     <label for="weight">Weight(in kgs):-</label>
-                                                    <span id="weight"></span>
+                                                    <span id="weight">{{ $appointment_data->patientdata->weight }}</span>
                                                     
                                                 </div>
                                                 <div class="mb-3">
-                                                    <label for="blood">Blood:-</label>
-                                                    <span id="blood"></span>
+                                                    <label for="blood">Blood Group:-</label>
+                                                    <span id="blood">{{ $appointment_data->patientdata->blood }}</span>
                                                 </div>
                                                 <div class="mb-3">
                                                     <label for="height">Height:-</label>
-                                                    <span id="height"></span>                                                   
+                                                    <span id="height">{{ $appointment_data->patientdata->height }}</span>                                                   
                                                 </div>
                                                 <div class="mb-3">
                                                     <label for="longitude">Longitude:- </label>
-                                                    <span id="longitude"></span>
+                                                    <span id="longitude">{{ $appointment_data->patientdata->longitude }}</span>
                                                 </div>
                                                 <div class="mb-3">
                                                     <label for="latitude">Latitude:- </label>
-                                                    <span id="latitude"></span>
+                                                    <span id="latitude">{{ $appointment_data->patientdata->latitude }}</span>
                                                 </div>
                                                 <div class="mb-3">
                                                     <label for="city" class="form-label">City:- </label>
-                                                    <span id="city"></span>
+                                                    <span id="city">{{ $appointment_data->patientdata->cityname->city }}</span>
                                                 </div>     
                                             </div>
                                                     </div>
@@ -245,16 +230,7 @@ input[type="radio"]:checked + label {
                                             <div class="row" id="form-data" >
                                                 <div class="col-12">
                                                     <div class="row items-container">
-                                                        <!-- <div class="col-sm-6"> -->
-                                                            
-                                                        
-                                                        
-                                                    
-
-
-                                                            
-                                                           
-                                                        <!-- </div> -->
+                                                       
                                                         
                                                         
                                                     </div>
@@ -308,60 +284,8 @@ input[type="radio"]:checked + label {
 
 <script>
     $(document).ready(function() {
-        $('#search_patient').click(function() {
-            // alert();
-            var keyword = $('#keyword').val();
-            $.ajax({
-                url:"{{ url('search-patient-name') }}",
-                type:"GET",
-                data:{keyword:keyword},
-                success:function(response){
-                    
-                    var patientContainer = $("#patient-container");
-                    patientContainer.empty(); // clear previous results
-                    response.patientdata.forEach(function(patient) {
-                        var patientBtn = $("<span/>", {
-                            class: "btn btn-info mx-2",
-                            text: patient.name
-                        });
-                        patientContainer.append(patientBtn);
-                        patientBtn.click(function() {
-                            // alert(patient.name);
-                            $.ajax({
-                                url: "{{ url('get-patient-details') }}",
-                                type: "GET",
-                                data: {name: patient.name},
-                                success: function(data) {
-                                    // $("#patient-details").html(JSON.stringify(patientDetails));
-                                    $('#name').text(data.patientdetails.name);
-                                    $('#patient_id').val(data.patientdetails.id);
-                                    $('#email').text(data.patientdetails.email);
-                                    $('#mobile').text(data.patientdetails.mobile);
-                                    $('#dob').text(data.patientdetails.dob);
-                                    $('#patientstatus').text(data.patientdetails.patientstatus);
-                                    $('#full_addrs').text(data.patientdetails.full_addrs);
-                                    $('#state').text(data.patientdetails.state);
-                                    $('#gender').text(data.patientdetails.gender);
-                                    $('#weight').text(data.patientdetails.weight);
-                                    $('#blood').text(data.patientdetails.blood);
-                                    $('#height').text(data.patientdetails.height);
-                                    $('#longitude').text(data.patientdetails.longitude);
-                                    $('#latitude').text(data.patientdetails.latitude);
-                                    $('#city').text(data.patientdetails.city);
-                                    
-                                    // show the div
-                                    $('.patient-detail').show();
-                                }
-                            });
-                        });
-                    });
-
-
-                        $('#patient-container').show();
-                }
-
-            });
-        });
+       
+        // alert(doc_id);
         $('#hospital_id').on('change', function () {
                 var hospital_id = this.value;
                 $("#doctor_id").html('');
@@ -402,17 +326,7 @@ input[type="radio"]:checked + label {
                 });
             });
             
-            $.ajax({
-                url: "{{ url('dropdown-hospital') }}",
-                dataType: 'json',
-                success: function(data) {
-                    var options = '';
-                    $.each(data, function(index, hospitaldata) {
-                        options += '<option value="' + hospitaldata.id + '">' + hospitaldata.institute_name + '</option>';
-                    });
-                    $('#hospital_id').append(options);
-                }
-            });
+            
             $.ajax({
                 url: "{{ url('search-patient') }}",
                 dataType: 'json',
@@ -424,7 +338,28 @@ input[type="radio"]:checked + label {
                     $('#hospital_id').append(options);
                 }
             });
+            
        
+    });
+    // code for slot
+    $(document).ready(function(){
+        var doc_id = $('#doc_id').val();
+        var patient_id = $('#patient_id').val();
+        $.ajax({
+                        url: "{{ url('show-available-slot') }}",
+                        type: "POST",
+                        data: {
+                            doc_id: doc_id,
+                            patient_id: patient_id,
+                            _token: '{{csrf_token()}}'
+                        }, 
+                        success: function (result) {
+                            console.log(result.template);
+                                $('.items-container').html(result.template);
+                                
+                                
+                            }
+                    });
     });
     function validate_password(){
         var pass = document.getElementById('password').value;

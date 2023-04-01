@@ -111,8 +111,13 @@ Route::group(['middleware'=>['auth']],function(){
     Route::post('/dropdown-doctor',[\App\Http\Controllers\UserController::class,'doctorname']);
     Route::post('/save-new-appointment',[\App\Http\Controllers\UserController::class,'save_new_appointment']);
     Route::get('/list-new-appointment',[App\Http\Controllers\UserController::class,'list_new_appointment']); 
+    // Route::get('/list-new-appointment/{date?}', [App\Http\Controllers\UserController::class,'list_new_appointment']);
+
     // Route::get('/available-selected-slot',[App\Http\Controllers\UserController::class,'available_selected_slot']); 
     Route::post('/update-existing-appointment',[\App\Http\Controllers\UserController::class,'update_existing_appointment']);
+    Route::put('/update-appointment/{patient_id}',[\App\Http\Controllers\UserController::class,'update_appointment']);
+    Route::delete('/appointment-delete/{id}',[\App\Http\Controllers\UserController::class,'appointment_delete']);
+    Route::get('/appointment-edit/{id}',[\App\Http\Controllers\UserController::class,'appointment_edit']);
     
 // Appointment end
 
@@ -120,9 +125,13 @@ Route::group(['middleware'=>['auth']],function(){
     Route::get('/add-appointment-slot',[App\Http\Controllers\UserController::class,'add_appointment_slot']); 
     Route::post('/save-appointment-master',[App\Http\Controllers\UserController::class,'save_appointment_master']); 
     Route::post('/available-slot',[App\Http\Controllers\UserController::class,'available_slot']);
+    Route::post('/show-available-slot',[App\Http\Controllers\UserController::class,'show_available_slot']);
     Route::delete('/appointment-master-delete/{id}',[App\Http\Controllers\UserController::class, 'appointment_master_delete']); 
 // Appointment master end
 
+// Consultation code start
+ Route::get('/add_consultation/{patient_id}',[App\Http\Controllers\UserController::class,'add_consultation']);
+// Consultation code end
 
 
 });
