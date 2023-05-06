@@ -1,0 +1,14 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class Consultation extends Model
+{
+    use HasFactory;
+    public function medicinename(){
+        return $this->belongsTo(Medicine::class,'medicine_name');
+    }
+}

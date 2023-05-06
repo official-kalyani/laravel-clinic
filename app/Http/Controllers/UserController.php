@@ -1,17 +1,20 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace app\Http\Controllers;
 
 use App\Models\Appointment;
 use App\Models\AppointmentMaster;
+use App\Models\Consultation;
 use App\Models\DoctorInformation;
 use App\Models\User;
 use App\Models\HospitalData;
+use App\Models\Medicine;
 use App\Models\PatientInfo;
 use App\Models\Speciality;
 use App\Models\State;
 use App\Models\StateCity;
 use App\Models\Symptom;
+use Carbon\Carbon;
 use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -1040,12 +1043,67 @@ class UserController extends Controller
 
     // consultation code start 
     public function add_consultation($patient_id){
+        $consultation_data = Consultation::where('patient_id',$patient_id)->orderBy('created_at', 'DESC')->get();
+        // echo '<pre>';print_r($consultation_data->medicine_name);exit();
+
         $appointment_data = Appointment::where('patient_id',$patient_id)->first();
         $hospitalinfo = HospitalData::all();
         $docinfo = DoctorInformation::where('hospital_name',$hospitalinfo[0]['id'])->get();
-            // return view('layouts.admin_layout.appointment_edit',compact('appointment_data','docinfo','hospitalinfo'));
-        return view('layouts.admin_layout.add_consultation',compact('appointment_data','docinfo','hospitalinfo'));
+        $dateOfBirth = $appointment_data->patientdata->dob;
+        $years = Carbon::parse($dateOfBirth)->age;
+        $medicines = Medicine::all();
+        
+        return view('layouts.admin_layout.add_consultation',compact('consultation_data','medicines','appointment_data','docinfo','hospitalinfo','years'));
     }
+    public function save_consultation(Request $request){
+        if ($request->isMethod('post')) {
+                $data = $request->all();
+                // echo '<pre>';print_r($data);exit();
+                $consultation_data = new Consultation();
+                $consultation_data->case_details = $data['case_details'];
+                $consultation_data->patient_id = $data['patient_id'];
+                $consultation_data->medicine_name = implode(',',$data['medicine_name']);
+                $consultation_data->no_of_days = $data['no_of_days'];
+                $consultation_data->special_instruction = $data['special_instruction'];               
+                $consultation_data->save();
+
+                return redirect('/list-new-appointment')->with('success', 'Data added successfully');
+        }
+    }
+    public function searchMedicine(Request $request)
+    {
+        $query = $request->get('query');
+        $medicines = Medicine::where('medicine_name', 'LIKE', '%'.$query.'%')->get();
+        return response()->json($medicines);
+    }
+    public function checkMedicineExists(Request $request) {
+        $medicineName = $request->input('medicine_name');
+    
+        $response = [];
+            // Check if the medicine exists in the medicine table
+            $medicine = Medicine::where('medicine_name', $medicineName)->first();
+    
+            if ($medicine) {
+                $response[] = [
+                    'exists' => true,
+                    'medicine_name' => $medicine->medicine_name,
+                ];
+            } else {
+                // If the medicine doesn't exist, insert it into the medicine table
+                $newMedicine = new Medicine();
+                $newMedicine->medicine_name = $medicineName;
+                $newMedicine->save();
+    
+                $response[] = [
+                    'exists' => false,
+                    'medicine_name' => $newMedicine->medicine_name,
+                ];
+            }
+      
+    
+        return response()->json($response);
+    }
+    
     // consultation code end
         
 }

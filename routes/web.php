@@ -131,6 +131,9 @@ Route::group(['middleware'=>['auth']],function(){
 
 // Consultation code start
  Route::get('/add_consultation/{patient_id}',[App\Http\Controllers\UserController::class,'add_consultation']);
+ Route::post('/save-consultation',[App\Http\Controllers\UserController::class,'save_consultation']);
+ Route::get('/get-medicine-name',[App\Http\Controllers\UserController::class,'searchMedicine']);
+ Route::post('/check-medicine-exists',[App\Http\Controllers\UserController::class,'checkMedicineExists']);
 // Consultation code end
 
 

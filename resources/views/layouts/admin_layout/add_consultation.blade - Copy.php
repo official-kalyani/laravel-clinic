@@ -15,9 +15,6 @@
 
     <script src="{{ asset('js/pages/ecommerce-shop.init.js') }}"></script>
     <script src="https://cdn.tiny.cloud/1/o9ixq8pk7ojbpm7wqbyrzwomj7uv41yuckgycjn5b7rczyfe/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
-
- 
-
     @include('layouts.admin_layout.head-style')
 
     <style>
@@ -36,7 +33,9 @@
 
 @include('layouts.admin_layout.menu')
 
-   
+    <!-- ============================================================== -->
+    <!-- Start right Content here -->
+    <!-- ============================================================== -->
     <div class="main-content">
 
         <div class="page-content">
@@ -101,57 +100,20 @@
                     <div class="col-12">
                         <div class="card">
                             <div class="card-header">
-                                <h4 class="card-title">Patient History
-                                    <input type="button" class="btn btn-primary" name="patient_history" id="patient_history" value="Show"/>
-                                    <input type="button" class="btn btn-primary" name="patient_hide_btn" id="patient_hide_btn" value="Hide" style="display: none;">
-                            </h4>
+                                <h4 class="card-title">Patient History<input type="button" class="btn btn-primary" name="patient_history" id="patient_history" value="Show"/></h4>
                                 <p class="card-title-desc">
-                                    <input type="hidden" name="patient_id" value="{{ $appointment_data->patient_id}}">
+                                    
                                 </p>
                             </div>
                             <div class="card-body">
                                
-                                    @foreach($consultation_data as $consultation_data_single)
-                                    <div class="mt-2 pt-2 patient_history_detail"  style="display:none;">
-                                        <div class="comment-section border-bottom pb-4">
-                                            <div class="d-flex">
-                                                <div class="flex-1 ms-4">
-                                                    <div class="post-meta align-middle">
-                                                        <span><i class="mdi mdi-calendar me-2"></i>
-                                                            @php
-                                                                $dateString = $consultation_data_single->created_at;
-                                                                $date = new DateTime($dateString);
-                                                                $formattedDate = $date->format('F j, Y');
-                                                                echo $formattedDate;
-
-                                                            @endphp
-                                                    </span> <br/>
-                                                    </div>
-                                                    <h5 class="font-size-15"></h5>
-                                                    <p class="text-muted w-75 mb-0">
-                                                        {!! $consultation_data_single->case_details !!}
-                                                       
-                                                    </p> <br/>
-                                                    <p class="text-muted w-75 mb-0">
-                                                        
-                                                        Medicine names- {{ $consultation_data_single->medicine_name }}
-                                                        <br/>
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        
-                                    </div>            
-                                    @endforeach
-                                    
-                             
-                                <!-- <div class="row" id="form-data" >
+                                <div class="row" id="form-data" >
                                     <div class="col-12">
                                         <div class="row">
                                             
                                         </div>
                                     </div>
-                                </div> -->
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -184,7 +146,35 @@
                                 </div>
                             </div>
                             <!-- end of row -->
-                            
+                            <!-- <div class="row">
+                                <div class="col-12">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h4 class="card-title">Prescribe Medicine</h4>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="row" id="form-data" >
+                                                <div class="col-md-6">
+                                                <div class="search">
+                                                
+                                                    <input type="text" name="medicine_name" id="medicine_name" placeholder="Search by medicine name" class="form-control" >
+                                                   
+                                                
+                                                </div>
+                                                </div>
+                                                <div class="col-md-6"></div>
+                                            </div>
+                                            <div class="row mt-4">
+                                                <div class="col-md-12">
+                                                <div id="medicine-search-results" style="display: none;"></div>
+                                               
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div> -->
+                            <!-- end of row -->
                             <div class="row">
                                 <div class="col-12">
                                     <div class="card">
@@ -194,14 +184,15 @@
                                         <div class="card-body">
                                             <div class="row" id="form-data" >
                                                 <div class="col-md-6">
-                                               
-                                                <select name="medicine_name[]" id="medicine-name" class="form-control select2" multiple>
-                                                @foreach($medicines as $medicinename)
-                                                        
-                                                            <option value="{{ $medicinename->medicine_name }}">{{$medicinename->medicine_name}}</option>
-                                                     
-                                                    @endforeach
-                                                </select>
+                                                <div class="search">
+                                                
+                                                <select class="form-control select2" id="medicine_name" name="medicine_name[]" multiple>
+                                                @foreach ($medicines as $medicine)
+                                                    <option value="{{ $medicine->id }}">{{ $medicine->medicine_name }}</option>
+                                                @endforeach
+                                            </select>
+                                                
+                                                </div>
                                                 </div>
                                                 <div class="col-md-6"></div>
                                             </div>
@@ -287,13 +278,10 @@
 <!-- dropzone plugin -->
 <script src="{{ asset('libs/dropzone/min/dropzone.min.js')}}"></script>
 
-<!-- init js --> -->
+<!-- init js -->
+<script src="{{ asset('js/pages/ecommerce-select2.init.js') }}"></script>
 <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.js"></script>
- <!-- Include Select2 CSS and JS files -->
- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css">
-    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script> -->
-
     <script>
 $(document).ready(function() {
   
@@ -306,41 +294,6 @@ $(document).ready(function() {
 
 });
 
-    </script>
-   
-
-    <!-- Initialize Select2 on the medicine name input field -->
-    <script>
-        $(document).ready(function() {
-            $('#medicine-name').select2({
-                tags: true,
-                tokenSeparators: [',', 13],
-                // tokenSeparators: [',', ' '],
-                createTag: function(params) {
-                    // Don't allow the user to create a new tag if it already exists
-                    var exists = false;
-                    $('option', this).each(function() {
-                        if ($(this).val().toUpperCase() === params.term.toUpperCase()) {
-                            exists = true;
-                        }
-                    });
-                    if (exists) {
-                        return null;
-                    }
-                    return {
-                        id: params.term,
-                        text: params.term,
-                        newTag: true
-                    }
-                }
-            }).on('select2:select', function(e) {
-                var medicineName = e.params.data.text;
-                checkMedicineExists(medicineName);
-            }).on('select2:unselect', function(e) {
-                // Clear any messages when the user unselects the medicine name
-                $('#medicine-message').html('');
-            });
-        });
     </script>
 
 <!-- <script type="text/javascript">
@@ -374,15 +327,44 @@ $(document).ready(function() {
    
 </script> -->
 <script>
-       
+        $(document).ready(function() {
+            $('#medicine_name').select2({
+                tags: true,
+                tokenSeparators: [',', ' '],
+                createTag: function(params) {
+                    // Don't allow the user to create a new tag if it already exists
+                    var exists = false;
+                    $('option', this).each(function() {
+                        if ($(this).val().toUpperCase() === params.term.toUpperCase()) {
+                            exists = true;
+                        }
+                    });
+                    if (exists) {
+                        return null;
+                    }
+                    return {
+                        id: params.term,
+                        text: params.term,
+                        newTag: true
+                    }
+                }
+            }).on('select2:select', function(e) {
+                var medicineName = e.params.data.text;
+                checkMedicineExists(medicineName);
+            }).on('select2:unselect', function(e) {
+                // Clear any messages when the user unselects the medicine name
+                $('#medicine-message').html('');
+            });
+        });
+
 
         function checkMedicineExists(medicineName) {
-                $.ajax({
-                    url: "{{ url('check-medicine-exists') }}",
-                    method: 'POST',
-                    data: {
-                    _token: '{{ csrf_token() }}',
-                    medicine_name: medicineName
+            $.ajax({
+                url: '/medicine/check',
+                method: 'POST',
+                data: {
+                _token: '{{ csrf_token() }}',
+                medicine_name: medicineName
                 },
                 success: function(response) {
                     var message = '';
@@ -400,18 +382,7 @@ $(document).ready(function() {
             });
         }
     </script>
-<script>
-    $('#patient_history').click(function(){
-        $('.patient_history_detail').show();
-        $('#patient_history').hide();
-        $('#patient_hide_btn').show();
-        });
-    $('#patient_hide_btn').click(function(){
-        $('.patient_history_detail').hide();
-        $('#patient_history').show();
-        $('#patient_hide_btn').hide();
-        });
-</script>
+
 </body>
 
 </html>
